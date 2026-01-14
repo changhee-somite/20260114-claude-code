@@ -73,12 +73,28 @@ Internal presentation (30-60 min) for a computational team already familiar with
 - [x] Phase 1: Research and compilation
 - [x] Phase 1.5: Additional research (permissions, alternatives, narrative)
 - [x] Phase 1.6: Setup/configuration guide, narrative refinement
-- [x] Phase 2: PRESENTATION.md slide outline (42 slides)
-- [ ] Phase 3: Figure preparation
-- [ ] Phase 4: PPTX generation
+- [x] Phase 2: PRESENTATION.md slide outline (43 slides)
+- [x] Phase 3: Figure preparation (workflow-improvement-loop.png + screenshots)
+- [x] Phase 4: PPTX generation (using template `2026-01-14_ClaudeCode.pptx`)
 
-## Next Steps
+## Current State
 
-1. **Fill in practical example**: Add details for `~/fastq_analysis/utilities` example
-2. **Prepare figures**: Generate or collect additional visuals for key concepts
-3. **Generate PPTX**: Use document-skills:pptx to create final presentation
+**Generated presentation**: `Claude-Code-Presentation.pptx` (43 slides)
+- Uses the existing PowerPoint template styling
+- All titles are complete sentences
+- Longer titles use smaller font (22pt) to fit template
+
+**Figures available** in `figures/`:
+- workflow-improvement-loop.png (generated diagram)
+- status-tab-*.png (screenshots)
+- blog-mike-tech-death-of-software.png
+- reddit-xml-structured-prompting.png
+- tweet-boris-cherny-parallel-claudes.png
+- ralph-wiggum-awesomeclaude.png
+
+## Next Steps (for future sessions)
+
+1. **Review PPTX**: Open and review slide content, layout, and flow
+2. **Add figures to slides**: Manually insert images from `figures/` where specified in PRESENTATION.md
+3. **Refine content**: Adjust bullet points, add speaker notes as needed
+4. **Prepare demo**: Set up live demo environment for the presentation

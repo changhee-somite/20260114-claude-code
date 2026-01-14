@@ -114,21 +114,67 @@ Added comprehensive comparison because:
 
 ---
 
+## Session 2: 2026-01-14 (PPTX Generation)
+
+### PPTX Generation Approach
+
+Used template-based workflow instead of html2pptx:
+1. Template file: `2026-01-14_ClaudeCode.pptx` (user's existing template)
+2. Used `rearrange.py` to create 43 slides from template
+3. Used `inventory.py` to extract shape structure
+4. Used `replace.py` to apply text content
+
+### Title Formatting Decision
+
+**Requirement**: All slide titles must be complete sentences.
+
+**Implementation**:
+- Titles condensed to ~60 characters while remaining full sentences
+- Longer titles (>60 chars) use smaller font (22pt instead of 28pt)
+- Smaller fonts (>45 chars: 24pt, >60 chars: 22pt)
+
+**Workspace files** (in `workspace/`):
+- `generate-replacement-fullsentences.py` — Script to generate replacement JSON
+- `working.pptx` — Intermediate file from template rearrangement
+- `replacement-text-fullsentences.json` — Final replacement data
+
+### Figures Status
+
+**Existing figures** (in `figures/`):
+| Figure | Status | Slide Reference |
+|--------|--------|-----------------|
+| workflow-improvement-loop.png | Generated | Slide 5 |
+| status-tab-usage.png | Screenshot | Slide 12 |
+| status-tab-status.png | Screenshot | Slide 23 |
+| tweet-boris-cherny-parallel-claudes.png | Screenshot | Slide 18 |
+| blog-mike-tech-death-of-software.png | Screenshot | Slide 3 |
+| reddit-xml-structured-prompting.png | Screenshot | Slide 4 |
+| ralph-wiggum-awesomeclaude.png | Screenshot | Slide 36 |
+
+**Note**: Figures need to be manually inserted into the PPTX slides.
+
+---
+
 ## Open Items for Future Sessions
 
 - [ ] Fill in fastq_analysis practical example (access conversation logs)
-- [x] Create PRESENTATION.md slide-by-slide outline (37 slides completed)
-- [ ] Generate additional figures if needed
-- [ ] Create PPTX using Skills
+- [x] Create PRESENTATION.md slide-by-slide outline (43 slides completed)
+- [x] Generate figures (workflow diagram + screenshots collected)
+- [x] Create PPTX using Skills (template-based approach)
+- [ ] Insert figures into PPTX slides manually
+- [ ] Add speaker notes to slides
+- [ ] Prepare live demo environment
 
 ---
 
 ## How to Continue
 
-For Phase 2, start a new session and say:
-> "Continue with Phase 2: Create PRESENTATION.md following docs/NARRATIVE.md. See docs/DECISIONS.md for preferences and context."
+For further refinement, start a new session and say:
+> "I want to refine the presentation. See docs/OVERVIEW.md for current status and docs/DECISIONS.md for context."
 
-Key files to reference:
-- `docs/NARRATIVE.md` — presentation flow
-- `docs/DECISIONS.md` — this file (preferences, decisions)
-- `docs/OVERVIEW.md` — topic index
+Key files:
+- `Claude-Code-Presentation.pptx` — Generated presentation (43 slides)
+- `docs/PRESENTATION.md` — Slide-by-slide outline with figure references
+- `docs/DECISIONS.md` — This file (all decisions and context)
+- `docs/OVERVIEW.md` — Project status and topic index
+- `figures/` — All available images for slides
