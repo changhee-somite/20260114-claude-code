@@ -8,7 +8,7 @@
 
 ---
 
-## Act 1: The Shift We're Living Through
+## Opening
 
 ---
 
@@ -23,7 +23,36 @@
 
 ---
 
-### Slide 2: We're stuck in an old mental model of development
+### Slide 2: Agenda
+**Title**: Today's Journey: From Coding to Workflow Design
+
+**Content**:
+1. **The Paradigm Shift** — Why we're moving from coding to orchestration
+2. **Context Engineering & Solutions** — The fundamental constraint and how to work with it
+3. **Getting Started** — Installation, configuration, and safety
+4. **Cursor vs Alternatives** — Comparing tools for different workflows
+5. **Demo & Future** — Live demonstration and what's coming next
+
+**Notes**: Give audience a roadmap. ~45-60 minutes total.
+
+---
+
+## Section 1: The Paradigm Shift
+
+---
+
+### Slide 3: Section — The Paradigm Shift
+**Title**: Section 1: The Paradigm Shift
+**Type**: Section Divider
+
+**Content**:
+From writing code to designing workflows
+
+**Notes**: Transition slide. Acts 1 and 1.5 content follows.
+
+---
+
+### Slide 4: We're stuck in an old mental model of development
 
 **Title**: We're stuck in an old mental model of development
 
@@ -40,7 +69,7 @@
 
 ---
 
-### Slide 3: Engineers are designing systems, not writing code
+### Slide 5: Engineers are designing systems, not writing code
 
 **Title**: Engineers are no longer writing software—they're designing higher-order systems
 
@@ -51,7 +80,7 @@
 
 > "The outcome is defined by the process, not the model." — Mike.tech
 
-**Figure**: [figures/blog-mike-tech-death-of-software.png](../figures/blog-mike-tech-death-of-software.png)
+**Figure**: [figures/Slide005-blog-mike-tech-death-of-software.png](../figures/Slide005-blog-mike-tech-death-of-software.png)
 
 **Notes**: This isn't hypothetical—it's happening now. The skill shift is real. Show the blog post header.
 
@@ -59,7 +88,7 @@
 
 ---
 
-### Slide 4: Think in abstractions, not code
+### Slide 6: Think in abstractions, not code
 
 **Title**: Communicate intent structurally—let the agent find the implementation
 
@@ -79,7 +108,7 @@
 
 > "It's like I was driving a race car in first gear the whole time."
 
-**Figure**: [figures/reddit-xml-structured-prompting.png](../figures/reddit-xml-structured-prompting.png)
+**Figure**: [figures/Slide006-reddit-xml-structured-prompting.png](../figures/Slide006-reddit-xml-structured-prompting.png)
 
 **Notes**: The more abstractly you communicate, the more leverage you give the agent.
 
@@ -87,7 +116,7 @@
 
 ---
 
-### Slide 5: Workflows compound—every update makes the system smarter
+### Slide 7: Workflows compound—every update makes the system smarter
 
 **Title**: Every update to CLAUDE.md, skills, and artifacts compounds your efficiency gains
 
@@ -109,13 +138,13 @@ Session 100: Agent works like a trained team member
 
 **Notes**: This is the architecture for rapid efficiency gains. The future is here—adoption is the challenge.
 
-**Figure**: [figures/workflow-improvement-loop.png](../figures/workflow-improvement-loop.png)
+**Figure**: [figures/Slide007-workflow-improvement-loop.png](../figures/Slide007-workflow-improvement-loop.png)
 
 **Source**: [topics/06-workflow-paradigm.md](topics/06-workflow-paradigm.md)
 
 ---
 
-### Slide 6: Claude Code is a general agent, not a coding tool
+### Slide 8: Claude Code is a general agent, not a coding tool
 
 **Title**: Claude Code is a general agent for computer automation, not just a coding tool
 
@@ -131,7 +160,7 @@ Session 100: Agent works like a trained team member
 
 ---
 
-### Slide 7: Claude Code automates anything you can type into a computer
+### Slide 9: Claude Code automates anything you can type into a computer
 
 **Title**: Claude Code can automate anything you can achieve by typing commands into a computer
 
@@ -149,11 +178,7 @@ Session 100: Agent works like a trained team member
 
 ---
 
-## Act 1.5: The Key Insight — LLM + Filesystem
-
----
-
-### Slide 8: The critical distinction is filesystem access
+### Slide 10: The critical distinction is filesystem access
 
 **Title**: Claude Code is an LLM that got permission to access a file system
 
@@ -174,7 +199,7 @@ Session 100: Agent works like a trained team member
 
 ---
 
-### Slide 9: The power comes from simplicity
+### Slide 11: The power comes from simplicity
 
 **Title**: Claude Code's power comes from its simplicity: minimal protocol, maximum capability
 
@@ -190,11 +215,22 @@ Session 100: Agent works like a trained team member
 
 ---
 
-## Act 2: The Fundamental Constraint
+## Section 2: Context Engineering & Solutions
 
 ---
 
-### Slide 10: The transformer architecture imposes a hard constraint
+### Slide 12: Section — Context Engineering & Solutions
+**Title**: Section 2: Context Engineering & Solutions
+**Type**: Section Divider
+
+**Content**:
+The fundamental constraint and how to work around it
+
+**Notes**: Transition slide. Covers the O(N²) constraint and derived solutions.
+
+---
+
+### Slide 13: The transformer architecture imposes a hard constraint
 
 **Title**: The O(N²) memory complexity of transformers creates a hard context limit
 
@@ -210,7 +246,7 @@ Session 100: Agent works like a trained team member
 
 ---
 
-### Slide 11: Context engineering is the fundamental skill
+### Slide 14: Context engineering is the fundamental skill
 
 **Title**: Context engineering—managing what enters the context window—is the fundamental skill
 
@@ -227,7 +263,7 @@ Key strategies:
 
 ---
 
-### Slide 12: You can monitor your context usage in real-time
+### Slide 15: You can monitor your context usage in real-time
 
 **Title**: The /status command lets you monitor context usage in real-time
 
@@ -236,7 +272,7 @@ Key strategies:
 - Session reset: when the 5-hour window resets
 - Weekly usage across Opus and Sonnet models
 
-**Figure**: [figures/status-tab-usage.png](../figures/status-tab-usage.png)
+**Figure**: [figures/Slide015-status-tab-usage.png](../figures/Slide015-status-tab-usage.png)
 
 **Notes**: Demo the /status command. Emphasize how context fills up.
 
@@ -244,11 +280,7 @@ Key strategies:
 
 ---
 
-## Act 3: Solutions Derived from the Constraint
-
----
-
-### Slide 13: Subagents solve the context limitation through fresh windows
+### Slide 16: Subagents solve the context limitation through fresh windows
 
 **Title**: Subagents spawn fresh context windows to handle parallel tasks
 
@@ -264,7 +296,7 @@ Key strategies:
 
 ---
 
-### Slide 14: Agentic patterns provide a taxonomy of solutions
+### Slide 17: Agentic patterns provide a taxonomy of solutions
 
 **Title**: A taxonomy of agentic patterns has emerged from practical experience
 
@@ -282,7 +314,7 @@ Key strategies:
 
 ---
 
-### Slide 15: Skills are token-efficient instructions in markdown
+### Slide 18: Skills are token-efficient instructions in markdown
 
 **Title**: Skills are elegantly simple: markdown files with instructions that Claude loads on demand
 
@@ -298,7 +330,7 @@ Key strategies:
 
 ---
 
-### Slide 16: 140+ scientific skills are available for research
+### Slide 19: 140+ scientific skills are available for research
 
 **Title**: 140+ scientific skills cover databases, packages, and integrations
 
@@ -315,7 +347,7 @@ Categories: Bioinformatics, Cheminformatics, Clinical Research, ML/AI
 
 ---
 
-### Slide 17: The MCP debate reveals a context trade-off
+### Slide 20: The MCP debate reveals a context trade-off
 
 **Title**: MCP servers can waste 7-9% of context window with unused tool descriptions
 
@@ -336,7 +368,7 @@ Categories: Bioinformatics, Cheminformatics, Clinical Research, ML/AI
 
 ---
 
-### Slide 18: Git worktree enables parallel Claude Code sessions
+### Slide 21: Git worktree enables parallel Claude Code sessions
 
 **Title**: Once workflows are automated, git worktree enables running multiple sessions in parallel
 
@@ -359,7 +391,7 @@ cd ../feature-tests && claude
 | One context window | Multiple fresh contexts |
 | Blocking on long tasks | Non-blocking workflow |
 
-**Figure**: [figures/tweet-boris-cherny-parallel-claudes.png](../figures/tweet-boris-cherny-parallel-claudes.png)
+**Figure**: [figures/Slide021-tweet-boris-cherny-parallel-claudes.png](../figures/Slide021-tweet-boris-cherny-parallel-claudes.png)
 
 **Notes**: This is unconventional but powerful—treat Claude Code sessions like parallel workers. Even Boris Cherny (Claude Code creator) runs 5 Claudes in parallel!
 
@@ -367,7 +399,7 @@ cd ../feature-tests && claude
 
 ---
 
-### Slide 19: Parallelization is the next efficiency multiplier
+### Slide 22: Parallelization is the next efficiency multiplier
 
 **Title**: Workflow → Context → Parallelization: three pillars of agent-era efficiency
 
@@ -388,11 +420,22 @@ cd ../feature-tests && claude
 
 ---
 
-## Act 4: Practical Setup and Considerations
+## Section 3: Getting Started
 
 ---
 
-### Slide 20: Installation is a single npm command
+### Slide 23: Section — Getting Started
+**Title**: Section 3: Getting Started
+**Type**: Section Divider
+
+**Content**:
+Installation, configuration, and safety
+
+**Notes**: Transition slide. Practical setup content follows.
+
+---
+
+### Slide 24: Installation is a single npm command
 
 **Title**: Getting started requires one npm install and authentication
 
@@ -412,7 +455,7 @@ First run: authenticate, create ~/.claude/, optionally run /init
 
 ---
 
-### Slide 21: Subscription plans scale from $20 to $200/month
+### Slide 25: Subscription plans scale from $20 to $200/month
 
 **Title**: Subscription plans range from Pro ($20) to Max 20x ($200) based on usage needs
 
@@ -431,7 +474,7 @@ Usage shared across Claude web, desktop, and Code.
 
 ---
 
-### Slide 22: The statusline shows real-time session data
+### Slide 26: The statusline shows real-time session data
 
 **Title**: A customizable statusline displays model, cost, and tokens in real-time
 
@@ -450,7 +493,7 @@ Setup: `/statusline show the model name and context usage percentage`
 
 ---
 
-### Slide 23: The /status command provides a session dashboard
+### Slide 27: The /status command provides a session dashboard
 
 **Title**: The /status command shows session info, config, and usage in tabs
 
@@ -460,7 +503,7 @@ Three tabs:
 - **Config**: Preferences, theme, checkpoints
 - **Usage**: Context percentage, weekly limits
 
-**Figure**: [figures/status-tab-status.png](../figures/status-tab-status.png)
+**Figure**: [figures/Slide027-status-tab-status.png](../figures/Slide027-status-tab-status.png)
 
 **Notes**: Demo switching between tabs with Tab key.
 
@@ -468,7 +511,7 @@ Three tabs:
 
 ---
 
-### Slide 24: CLAUDE.md provides project-specific context
+### Slide 28: CLAUDE.md provides project-specific context
 
 **Title**: CLAUDE.md files give Claude persistent project-specific context at every session
 
@@ -493,7 +536,7 @@ Hierarchy: ~/.claude/ → parent → project → subdirectory
 
 ---
 
-### Slide 25: Four permission modes balance control and convenience
+### Slide 29: Four permission modes balance control and convenience
 
 **Title**: Four permission modes let you choose the right balance of control and convenience
 
@@ -513,7 +556,7 @@ Switch with `Shift+Tab`
 
 ---
 
-### Slide 26: Granular rules provide fine-grained control
+### Slide 30: Granular rules provide fine-grained control
 
 **Title**: Granular allow/deny/ask rules in settings.json provide fine-grained control
 
@@ -536,7 +579,7 @@ Evaluation order: deny → allow → ask
 
 ---
 
-### Slide 27: Hooks enable custom permission logic
+### Slide 31: Hooks enable custom permission logic
 
 **Title**: Hooks let you run custom scripts before and after tool execution
 
@@ -560,7 +603,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 28: Three elements create the security risk surface
+### Slide 32: Three elements create the security risk surface
 
 **Title**: The "Lethal Trifecta" identifies three elements that create data theft risk
 
@@ -577,7 +620,22 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 29: Cursor and Claude Code represent different paradigms
+## Section 4: Cursor vs Alternatives
+
+---
+
+### Slide 33: Section — Cursor vs Alternatives
+**Title**: Section 4: Cursor vs Alternatives
+**Type**: Section Divider
+
+**Content**:
+Comparing tools for different workflows
+
+**Notes**: Transition slide. Comparison content follows.
+
+---
+
+### Slide 34: Cursor and Claude Code represent different paradigms
 
 **Title**: Cursor is an AI assistant; Claude Code is an autonomous agent
 
@@ -596,7 +654,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 30: The choice reflects your mental model of development
+### Slide 35: The choice reflects your mental model of development
 
 **Title**: If you think in files and edits, use Cursor; if you think in tasks and outcomes, use Claude Code
 
@@ -619,7 +677,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 31: The alternatives landscape includes several strong options
+### Slide 36: The alternatives landscape includes several strong options
 
 **Title**: Alternatives like OpenCode, Aider, and Gemini CLI offer different trade-offs
 
@@ -637,7 +695,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 32: Benchmark scores show performance differences
+### Slide 37: Benchmark scores show performance differences
 
 **Title**: Claude Code with Opus 4.5 leads SWE-bench at 80.9%
 
@@ -657,11 +715,22 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-## Act 5: Demonstration
+## Section 5: Demo & Future
 
 ---
 
-### Slide 33: This presentation was built using the workflow we've described
+### Slide 38: Section — Demo & Future
+**Title**: Section 5: Demo & Future
+**Type**: Section Divider
+
+**Content**:
+Live demonstration and what's coming next
+
+**Notes**: Transition slide. Demo and future directions follow.
+
+---
+
+### Slide 39: This presentation was built using the workflow we've described
 
 **Title**: This presentation demonstrates the workflow: CLAUDE.md → research → topics → PPTX
 
@@ -686,7 +755,7 @@ docs/PRESENTATION.md (slide outline)
 
 ---
 
-### Slide 34: Git commit history shows the iterative process
+### Slide 40: Git commit history shows the iterative process
 
 **Title**: Each meaningful change was committed, documenting the human-agent collaboration
 
@@ -706,7 +775,7 @@ Key commits:
 
 ---
 
-### Slide 35: Live demonstration placeholder
+### Slide 41: Live demonstration placeholder
 
 **Title**: [Live Demo] Claude Code workflow on a practical task
 
@@ -723,11 +792,7 @@ Demo options:
 
 ---
 
-## Act 6: Future Directions
-
----
-
-### Slide 36: The future is iterative loops that run until completion
+### Slide 42: The future is iterative loops that run until completion
 
 **Title**: Ralph-Wiggum: iterative loops that treat failure as data, not exit condition
 
@@ -744,7 +809,7 @@ Demo options:
 - Parallel Ralph loops across git worktrees
 - Structured multi-agent frameworks (BMAD-METHOD: 29.7k stars, 21 agents)
 
-**Figure**: [figures/ralph-wiggum-awesomeclaude.png](../figures/ralph-wiggum-awesomeclaude.png)
+**Figure**: [figures/Slide042-ralph-wiggum-awesomeclaude.png](../figures/Slide042-ralph-wiggum-awesomeclaude.png)
 
 **Notes**: Show the awesomeclaude.ai/ralph-wiggum page. Mention BMAD-METHOD as an example of structured frameworks emerging.
 
@@ -752,7 +817,7 @@ Demo options:
 
 ---
 
-### Slide 37: This is about adopting a new way of thinking
+### Slide 43: This is about adopting a new way of thinking
 
 **Title**: The future is here—adoption to a new way of thinking is the primary challenge
 
@@ -781,7 +846,7 @@ Demo options:
 
 ---
 
-### Slide 38: Key takeaways
+### Slide 44: Key takeaways
 
 **Title**: Key takeaways: compound efficiency through workflow, context, and parallelization
 
@@ -797,7 +862,7 @@ Demo options:
 
 ---
 
-### Slide 39: Resources and next steps
+### Slide 45: Resources and next steps
 
 **Title**: Resources for getting started with Claude Code
 
@@ -816,7 +881,7 @@ Demo options:
 
 ---
 
-### Slide 40: Questions and discussion
+### Slide 46: Questions and discussion
 
 **Title**: Questions?
 
@@ -892,13 +957,13 @@ Available servers: GitHub, databases, APIs
 
 | Slide | Figure | Path | Status |
 |-------|--------|------|--------|
-| 3 | Death of Software Blog | [figures/blog-mike-tech-death-of-software.png](../figures/blog-mike-tech-death-of-software.png) | EXISTS |
-| 4 | XML Structured Prompting | [figures/reddit-xml-structured-prompting.png](../figures/reddit-xml-structured-prompting.png) | EXISTS |
-| 5 | Workflow Improvement Loop | [figures/workflow-improvement-loop.png](../figures/workflow-improvement-loop.png) | TO CREATE |
-| 12 | Usage Tab | [figures/status-tab-usage.png](../figures/status-tab-usage.png) | EXISTS |
-| 18 | Boris Cherny Parallel Claudes | [figures/tweet-boris-cherny-parallel-claudes.png](../figures/tweet-boris-cherny-parallel-claudes.png) | EXISTS |
-| 23 | Status Tab | [figures/status-tab-status.png](../figures/status-tab-status.png) | EXISTS |
-| 36 | Ralph-Wiggum | [figures/ralph-wiggum-awesomeclaude.png](../figures/ralph-wiggum-awesomeclaude.png) | EXISTS |
+| 5 | Death of Software Blog | [figures/Slide005-blog-mike-tech-death-of-software.png](../figures/Slide005-blog-mike-tech-death-of-software.png) | EXISTS |
+| 6 | XML Structured Prompting | [figures/Slide006-reddit-xml-structured-prompting.png](../figures/Slide006-reddit-xml-structured-prompting.png) | EXISTS |
+| 7 | Workflow Improvement Loop | [figures/Slide007-workflow-improvement-loop.png](../figures/Slide007-workflow-improvement-loop.png) | TO CREATE |
+| 15 | Usage Tab | [figures/Slide015-status-tab-usage.png](../figures/Slide015-status-tab-usage.png) | EXISTS |
+| 21 | Boris Cherny Parallel Claudes | [figures/Slide021-tweet-boris-cherny-parallel-claudes.png](../figures/Slide021-tweet-boris-cherny-parallel-claudes.png) | EXISTS |
+| 27 | Status Tab | [figures/Slide027-status-tab-status.png](../figures/Slide027-status-tab-status.png) | EXISTS |
+| 42 | Ralph-Wiggum | [figures/Slide042-ralph-wiggum-awesomeclaude.png](../figures/Slide042-ralph-wiggum-awesomeclaude.png) | EXISTS |
 
 ### Additional Screenshots Available
 
@@ -912,18 +977,16 @@ Available servers: GitHub, databases, APIs
 
 ## Slide Count Summary
 
-| Section | Slides |
-|---------|--------|
-| Act 1: The Shift (inc. abstract thinking, compounding) | 7 |
-| Act 1.5: LLM + Filesystem | 2 |
-| Act 2: Constraint | 3 |
-| Act 3: Solutions + Parallelization | 7 |
-| Act 4: Practical | 13 |
-| Act 5: Demo | 3 |
-| Act 6: Future Directions | 2 |
-| Closing | 3 |
-| Appendix | 3 |
-| **Total** | **43** |
+| Section | Slides | Range |
+|---------|--------|-------|
+| Opening (Title + Agenda) | 2 | 1-2 |
+| Section 1: The Paradigm Shift | 9 | 3-11 |
+| Section 2: Context Engineering & Solutions | 11 | 12-22 |
+| Section 3: Getting Started | 10 | 23-32 |
+| Section 4: Cursor vs Alternatives | 5 | 33-37 |
+| Section 5: Demo & Future | 9 | 38-46 |
+| Appendix | 3 | A1-A3 |
+| **Total** | **49** | |
 
 ---
 
