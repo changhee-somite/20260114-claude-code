@@ -16,9 +16,8 @@
 **Title**: Claude Code: From Coding to Workflow Design
 
 **Content**:
-- Presenter name
-- Date: January 2026
-- Internal Computational Team
+- ChangHee Lee
+- Computational Team Lunch & Learn 2026-01-14
 
 **Notes**: Welcome, context for why this presentation matters to our team.
 
