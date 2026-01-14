@@ -33,6 +33,7 @@ Internal presentation (30-60 min) for a computational team already familiar with
 | 8 | Alternatives | [topics/08-alternatives-comparison.md](topics/08-alternatives-comparison.md) | OpenCode, Aider, Gemini CLI |
 | 9 | Practical Examples | [topics/09-practical-examples.md](topics/09-practical-examples.md) | This presentation, fastq_analysis |
 | 10 | Setup & Configuration | [topics/10-setup-and-configuration.md](topics/10-setup-and-configuration.md) | /statusline, /plugin, CLAUDE.md |
+| 11 | **Appendix: Tools & MCP** | [topics/11-appendix-tools-and-mcp.md](topics/11-appendix-tools-and-mcp.md) | Built-in tools, MCP setup, Gemini |
 
 ## Key Sources
 
