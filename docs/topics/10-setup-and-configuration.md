@@ -89,6 +89,65 @@ On first run, Claude Code will:
 
 ---
 
+## Monitoring Usage: /status Command
+
+The `/status` command provides a comprehensive view of your session, configuration, and usage. Press `Tab` or use arrow keys to switch between tabs.
+
+### Status Tab
+
+Shows session information:
+- **Version**: Claude Code version (e.g., 2.1.7)
+- **Session ID**: Unique identifier for current session
+- **Working directory**: Current project path
+- **Login method**: Claude Max Account, Pro, or API
+- **Model**: Current default model (e.g., Opus 4.5)
+- **MCP servers**: Active plugins (e.g., plugin:context7, plugin:github)
+- **Memory**: Loaded CLAUDE.md files
+
+![Status Tab](../../figures/status-tab-status.png)
+
+### Config Tab
+
+View and modify configuration preferences:
+- Auto-compact, thinking mode, prompt suggestions
+- Rewind code (checkpoints)
+- Theme (Dark mode, etc.)
+- Model selection
+- Terminal and output settings
+
+![Config Tab](../../figures/status-tab-config.png)
+
+### Usage Tab
+
+**Critical for context engineering** - monitor your usage in real-time:
+
+| Metric | Description |
+|--------|-------------|
+| **Current session** | Context window usage (e.g., "24% used") |
+| **Session reset** | When the 5-hour window resets |
+| **Current week (all models)** | Weekly usage across Opus + Sonnet |
+| **Current week (Sonnet only)** | Sonnet-specific usage |
+
+![Usage Tab](../../figures/status-tab-usage.png)
+
+### Why Usage Monitoring Matters
+
+- **Context window fills up** → model performance degrades
+- **Approaching limits** → plan when to start fresh sessions
+- **Weekly limits** → pace your heavy usage across the week
+- **Model switching** → Max plans auto-switch when limits approach
+
+### Related Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/status` | Full status dashboard (Status, Config, Usage tabs) |
+| `/context` | Quick view of context window state |
+| `/clear` | Clear conversation to free context |
+| `/compact` | Compress conversation to save tokens |
+
+---
+
 ## Statusline Configuration
 
 The statusline displays real-time information at the bottom of the Claude Code interface.
