@@ -8,6 +8,7 @@ Internal presentation (30-60 min) for a computational team already familiar with
 | Document | Purpose |
 |----------|---------|
 | **[NARRATIVE.md](NARRATIVE.md)** | Presentation flow and storyline (5-act structure) |
+| **[PRESENTATION.md](PRESENTATION.md)** | Slide-by-slide outline (37 slides) |
 | **[DECISIONS.md](DECISIONS.md)** | Session decisions, preferences, continuation instructions |
 
 **Core Thesis:** We're shifting from "coding" to "workflow design," driven by the fundamental context window constraint.
@@ -70,13 +71,12 @@ Internal presentation (30-60 min) for a computational team already familiar with
 - [x] Phase 1: Research and compilation
 - [x] Phase 1.5: Additional research (permissions, alternatives, narrative)
 - [x] Phase 1.6: Setup/configuration guide, narrative refinement
-- [ ] Phase 2: PRESENTATION.md slide outline
+- [x] Phase 2: PRESENTATION.md slide outline (37 slides)
 - [ ] Phase 3: Figure preparation
 - [ ] Phase 4: PPTX generation
 
 ## Next Steps
 
 1. **Fill in practical example**: Add details for `~/fastq_analysis/utilities` example
-2. **Create PRESENTATION.md**: Slide-by-slide outline following NARRATIVE.md
-3. **Prepare figures**: Generate or collect visuals for key concepts
-4. **Generate PPTX**: Use Skills to create final presentation
+2. **Prepare figures**: Generate or collect additional visuals for key concepts
+3. **Generate PPTX**: Use document-skills:pptx to create final presentation
