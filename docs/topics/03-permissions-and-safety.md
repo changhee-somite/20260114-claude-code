@@ -1,27 +1,146 @@
 # Permissions and Safety
 
 ## Summary
-Claude Code operates with significant system access. Understanding the permission model and safety considerations is crucial for effective and secure usage.
+Claude Code operates with significant system access. Understanding the permission model and safety considerations is crucial for effective and secure usage. Importantly, there's a middle ground between constant prompts and "YOLO mode."
 
-## The Permission Model
+## Permission Modes
 
-### Default Mode
-- Prompts for approval on file writes, command execution
-- Safer but interrupts workflow
-- Good for sensitive environments
+Claude Code offers four permission modes, switchable via `Shift+Tab`:
 
-### YOLO Mode (`--dangerously-skip-permissions`)
-- Eliminates constant approval requirements
-- "Transforms Claude Code into a completely different product"
-- Enables autonomous multi-hour tasks
-- **Use case**: Simon Willison completed 3 substantial projects in 48 hours
+| Mode | Behavior |
+|------|----------|
+| **default** | Prompts for approval on first use of each tool |
+| **acceptEdits** | Automatically accepts file edits for the session |
+| **plan** | Read-only analysis; cannot modify files or execute commands |
+| **bypassPermissions** | Skips all permission prompts (requires safe environment) |
+
+### Plan Mode
+- Claude analyzes but cannot modify
+- Uses a "Plan subagent" to gather context
+- Presents plan for approval before execution
+- Good for reviewing what changes will be made
+
+## Granular Permission Configuration
+
+### Settings File Hierarchy (Priority Order)
+```
+1. Enterprise managed (highest) → managed-settings.json
+2. Command line arguments     → session-specific
+3. Local project settings     → .claude/settings.local.json (git-ignored)
+4. Shared project settings    → .claude/settings.json (version-controlled)
+5. User settings (lowest)     → ~/.claude/settings.json
+```
+
+### Allow/Deny/Ask Rules
+
+Configure in `settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(git:*)",
+      "Read(~/.zshrc)",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "Read(./.env)",
+      "Read(./secrets/**)",
+      "Read(**/*.key)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(rm:*)"
+    ]
+  }
+}
+```
+
+### Rule Evaluation Order
+1. **deny** rules checked first (block regardless of other rules)
+2. **allow** rules checked next (permit if matched)
+3. **ask** rules force confirmation even if allowed
+
+### Pattern Syntax
+
+**Bash commands:**
+- `Bash(npm run lint)` - exact command
+- `Bash(npm run test:*)` - wildcard suffix
+- `Bash(git:*)` - any git command
+
+**File paths (gitignore-style):**
+- `Read(**/.env)` - .env files in any directory
+- `Read(**/*.key)` - files with .key extension
+- `Read(**/node_modules/**)` - any node_modules directory
+
+**WebFetch:**
+- `WebFetch(domain:docs.anthropic.com)` - specific domain
+
+### Interactive Permission Commands
+
+During a session:
+```
+/permissions add Edit
+/permissions add Bash(git commit:*)
+/permissions remove Bash(rm:*)
+/permissions list
+```
+
+## Hooks for Custom Permission Logic
+
+Hooks allow custom code to run at key events:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/path/to/validator.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### Hook Events
+- **PreToolUse**: Block or modify tool calls before execution
+- **PostToolUse**: Run formatters, linters after file changes
+- **PermissionRequest**: Auto-approve specific patterns
+
+### Security Note
+Direct edits to hook configuration require review in `/hooks` menu - prevents malicious code from silently adding hooks.
+
+## YOLO Mode (`--dangerously-skip-permissions`)
+
+### When It's Appropriate
+- Isolated environments (Docker containers)
+- Non-sensitive codebases
+- Well-scoped, defined tasks
+- When you can review all changes afterward
+
+### When to Avoid
+- Production environments
+- Codebases with credentials
+- Tasks involving untrusted input
+
+### Best Practice
+Even with YOLO mode, configure an `AllowedTools` whitelist:
+```json
+{
+  "allowedTools": ["Read", "Write", "Edit", "Bash(npm:*)", "Bash(git:*)"]
+}
+```
 
 ## Security Considerations
-
-### The Critical Threat: Prompt Injection
-> "Anyone who can get text into your LLM has full control over what tools it runs next"
-
-**Example Attack**: Agent tricked into extracting GitHub tokens from environment variables and exfiltrating them via HTTP.
 
 ### The Lethal Trifecta
 Three elements that create data theft risk:
@@ -29,43 +148,32 @@ Three elements that create data theft risk:
 2. **Exposure to untrusted content** (web pages, user input)
 3. **External communication ability** (network access)
 
-When all three combine = vulnerability.
+### Prompt Injection
+> "Anyone who can get text into your LLM has full control over what tools it runs next"
+
+AI cannot reliably detect prompt injection attacks.
 
 ## Sandboxing Solutions
 
-### Anthropic's Approach
-- macOS `sandbox-exec` with HTTP proxy controls
-- Allow-list specific domains
-- Filesystem restrictions
+| Approach | Description |
+|----------|-------------|
+| macOS `sandbox-exec` | Anthropic's built-in with HTTP proxy controls |
+| Docker containers | Isolated filesystem and network |
+| Cloud sandboxes | Claude Code for Web, Codex Cloud |
+| VM-per-session | Maximum isolation |
 
-### Key Controls
-| Control | Purpose |
-|---------|---------|
-| Filesystem restrictions | Limit readable/writable paths |
-| Network access controls | Block data exfiltration |
-| Domain allow-listing | Permit only necessary endpoints |
+## Enterprise Settings
 
-### Cloud-Based Sandboxes
-- Claude Code for Web
-- OpenAI Codex Cloud
-- Gemini Jules
-- Running "on someone else's computer" = credible isolation
+`managed-settings.json` files cannot be overridden by user or project settings - ideal for enforcing organization-wide security policies.
 
-## Best Practices
-
-1. **Reserve YOLO mode for non-sensitive code**
-2. **Use cloud sandboxes when possible**
-3. **Implement network restrictions**
-4. **Don't trust AI to detect prompt injection** - it can't reliably
-
-## Virtualization Evolution
-
-The field is moving toward:
-- Container-based isolation
-- VM-per-session approaches
-- Network egress lockdown by default
+Location:
+- macOS: `/Library/Application Support/ClaudeCode/managed-settings.json`
+- Linux/WSL: `/etc/claude-code/managed-settings.json`
 
 ## Key References
 
-- [Simon Willison: Living Dangerously with Claude](https://simonwillison.net/2025/Oct/22/living-dangerously-with-claude/)
-- [Awesome Agentic Patterns: Security](https://esc5221.github.io/awesome-agentic-patterns/)
+- [Claude Code Permissions Guide](https://www.eesel.ai/blog/claude-code-permissions)
+- [Claude Code Settings Docs](https://code.claude.com/docs/en/settings)
+- [Hooks Guide](https://code.claude.com/docs/en/hooks-guide)
+- [Simon Willison: Living Dangerously](https://simonwillison.net/2025/Oct/22/living-dangerously-with-claude/)
+- [Permission Management Guide](https://claudefa.st/blog/guide/development/permission-management)
