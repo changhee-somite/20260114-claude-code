@@ -36,6 +36,7 @@ Internal presentation (30-60 min) for a computational team already familiar with
 | 10 | Setup & Configuration | [topics/10-setup-and-configuration.md](topics/10-setup-and-configuration.md) | /statusline, /plugin, CLAUDE.md |
 | 11 | **Appendix: Tools & MCP** | [topics/11-appendix-tools-and-mcp.md](topics/11-appendix-tools-and-mcp.md) | Built-in tools, MCP setup, Gemini |
 | 12 | **Parallel Sessions** | [topics/12-parallel-sessions.md](topics/12-parallel-sessions.md) | Git worktree, multi-session workflows |
+| 13 | **Future Directions** | [topics/13-future-directions.md](topics/13-future-directions.md) | Ralph-Wiggum, compound efficiency, adoption |
 
 ## Key Sources
 
@@ -72,7 +73,7 @@ Internal presentation (30-60 min) for a computational team already familiar with
 - [x] Phase 1: Research and compilation
 - [x] Phase 1.5: Additional research (permissions, alternatives, narrative)
 - [x] Phase 1.6: Setup/configuration guide, narrative refinement
-- [x] Phase 2: PRESENTATION.md slide outline (39 slides)
+- [x] Phase 2: PRESENTATION.md slide outline (42 slides)
 - [ ] Phase 3: Figure preparation
 - [ ] Phase 4: PPTX generation
 

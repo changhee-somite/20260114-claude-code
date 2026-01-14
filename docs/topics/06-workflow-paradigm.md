@@ -59,6 +59,26 @@ Use external files (plans, to-do lists) rather than relying on in-session memory
 | Model capability | Workflow refinement |
 | Writing code | Describing outcomes |
 
+## The Compound Improvement Loop
+
+Workflows aren't static—they improve over time:
+
+```
+Session 1: Write CLAUDE.md with basic project context
+    ↓
+Session 5: Add common commands, conventions, warnings
+    ↓
+Session 20: Refined skills, custom hooks, team patterns
+    ↓
+Session 100: Agent works like a trained team member
+```
+
+**Why this matters:**
+- Artifacts persist (CLAUDE.md, skills, hooks)
+- Knowledge compounds—each improvement benefits all future sessions
+- Team leverage—one person's refinements benefit everyone
+- The architecture for rapid efficiency gains
+
 ## This Presentation as Example
 
 This very presentation demonstrates the workflow paradigm:

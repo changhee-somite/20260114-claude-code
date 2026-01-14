@@ -153,17 +153,35 @@ We are at an inflection point where the old mental model of "coding" is being re
 
 ---
 
+### Act 6: Future Directions
+
+**Vision:** The future is here—adoption is the challenge.
+
+17. **Ralph-Wiggum: Iterative Loops** (3 min)
+    - "A simple while loop that repeatedly feeds an AI agent a prompt until completion"
+    - Failure-as-data philosophy
+    - Overnight automation for greenfield projects
+    - Topic: [13-future-directions.md](topics/13-future-directions.md)
+
+18. **Adoption as the Primary Challenge** (2 min)
+    - Old thinking → new thinking transition
+    - Start with CLAUDE.md, refine over sessions
+    - Share learnings, build team patterns
+    - The technology is here; mindset is the barrier
+
+---
+
 ### Closing
 
-17. **Key Takeaways** (2 min)
+19. **Key Takeaways** (2 min)
     - Claude Code = LLM + filesystem access = general agent
+    - Workflows compound—every update makes the system smarter
     - Context engineering is the fundamental skill
-    - Workflow design > coding syntax
     - Parallelization via git worktree multiplies efficiency
-    - Match tool to mental model (assistant vs agent)
-    - Start with granular permissions, not YOLO
+    - The future is iterative loops that run until completion
+    - Adoption is the challenge—the technology is here
 
-18. **Resources & Next Steps** (1 min)
+20. **Resources & Next Steps** (1 min)
     - Link to this repository
     - Tutorial resources
     - Open questions for discussion
@@ -181,13 +199,16 @@ Every feature (subagents, skills, modes) derives from the context window constra
 ### Theme 3: Process > Model
 "The outcome is defined by the process, not the model."
 
-### Theme 4: Old Thinking → New Thinking
-We're changing behaviors, not just tools.
+### Theme 4: Compound Efficiency
+Workflows improve continuously; every CLAUDE.md update makes the system smarter.
 
 ### Theme 5: Three Pillars of Efficiency
 Workflow → Context → Parallelization. Each builds on the previous.
 
-### Theme 6: Practical Grounding
+### Theme 6: Adoption > Technology
+The future is here—adoption to a new way of thinking is the primary challenge.
+
+### Theme 7: Practical Grounding
 Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 ---
@@ -196,15 +217,16 @@ Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 | Act | Topic Count | Est. Slides |
 |-----|-------------|-------------|
-| Act 1: The Shift | 3 | 5 |
+| Act 1: The Shift (inc. compounding) | 4 | 6 |
 | Act 1.5: LLM + Filesystem | 1 | 2 |
 | Act 2: Constraint | 2 | 3 |
 | Act 3: Solutions + Parallelization | 4 | 7 |
 | Act 4: Practical | 4 | 13 |
 | Act 5: Demo | 2 | 3 |
+| Act 6: Future Directions | 2 | 2 |
 | Closing | 2 | 3 |
 | Appendix | 3 | 3 |
-| **Total** | **21** | **39** |
+| **Total** | **24** | **42** |
 
 ---
 
@@ -212,12 +234,12 @@ Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 | Section | Time |
 |---------|------|
-| Acts 1-1.5 (The shift, key insight) | 12 min |
+| Acts 1-1.5 (The shift, compounding, key insight) | 15 min |
 | Act 2 (Constraint) | 8 min |
 | Act 3 (Solutions + Parallelization) | 15 min |
-| Act 4 (Practical setup) | 18 min |
+| Act 4 (Practical setup) | 15 min |
 | Act 5 (Demo) | 10-15 min |
-| Closing + Q&A | 5-10 min |
+| Act 6 (Future) + Closing + Q&A | 10 min |
 
 ---
 

@@ -58,7 +58,35 @@
 
 ---
 
-### Slide 4: Claude Code is a general agent, not a coding tool
+### Slide 4: Workflows compound—every update makes the system smarter
+
+**Title**: Every update to CLAUDE.md, skills, and artifacts compounds your efficiency gains
+
+**Content**:
+```
+Session 1: Write CLAUDE.md with basic project context
+    ↓
+Session 5: Add common commands, conventions, warnings
+    ↓
+Session 20: Refined skills, custom hooks, team patterns
+    ↓
+Session 100: Agent works like a trained team member
+```
+
+**The Improvement Loop**:
+- Update CLAUDE.md → agent behaves better → update again
+- Create skills → reuse across projects → refine based on failures
+- Artifacts persist → knowledge compounds → efficiency accelerates
+
+**Notes**: This is the architecture for rapid efficiency gains. The future is here—adoption is the challenge.
+
+**Figure**: [figures/workflow-improvement-loop.png](../figures/workflow-improvement-loop.png)
+
+**Source**: [topics/06-workflow-paradigm.md](topics/06-workflow-paradigm.md)
+
+---
+
+### Slide 5: Claude Code is a general agent, not a coding tool
 
 **Title**: Claude Code is a general agent for computer automation, not just a coding tool
 
@@ -74,7 +102,7 @@
 
 ---
 
-### Slide 5: Claude Code automates anything you can type into a computer
+### Slide 6: Claude Code automates anything you can type into a computer
 
 **Title**: Claude Code can automate anything you can achieve by typing commands into a computer
 
@@ -96,7 +124,7 @@
 
 ---
 
-### Slide 6: The critical distinction is filesystem access
+### Slide 7: The critical distinction is filesystem access
 
 **Title**: Claude Code is an LLM that got permission to access a file system
 
@@ -117,7 +145,7 @@
 
 ---
 
-### Slide 7: The power comes from simplicity
+### Slide 8: The power comes from simplicity
 
 **Title**: Claude Code's power comes from its simplicity: minimal protocol, maximum capability
 
@@ -137,7 +165,7 @@
 
 ---
 
-### Slide 8: The transformer architecture imposes a hard constraint
+### Slide 9: The transformer architecture imposes a hard constraint
 
 **Title**: The O(N²) memory complexity of transformers creates a hard context limit
 
@@ -153,7 +181,7 @@
 
 ---
 
-### Slide 9: Context engineering is the fundamental skill
+### Slide 10: Context engineering is the fundamental skill
 
 **Title**: Context engineering—managing what enters the context window—is the fundamental skill
 
@@ -170,7 +198,7 @@ Key strategies:
 
 ---
 
-### Slide 10: You can monitor your context usage in real-time
+### Slide 11: You can monitor your context usage in real-time
 
 **Title**: The /status command lets you monitor context usage in real-time
 
@@ -191,7 +219,7 @@ Key strategies:
 
 ---
 
-### Slide 11: Subagents solve the context limitation through fresh windows
+### Slide 12: Subagents solve the context limitation through fresh windows
 
 **Title**: Subagents spawn fresh context windows to handle parallel tasks
 
@@ -207,7 +235,7 @@ Key strategies:
 
 ---
 
-### Slide 12: Agentic patterns provide a taxonomy of solutions
+### Slide 13: Agentic patterns provide a taxonomy of solutions
 
 **Title**: A taxonomy of agentic patterns has emerged from practical experience
 
@@ -225,7 +253,7 @@ Key strategies:
 
 ---
 
-### Slide 13: Skills are token-efficient instructions in markdown
+### Slide 14: Skills are token-efficient instructions in markdown
 
 **Title**: Skills are elegantly simple: markdown files with instructions that Claude loads on demand
 
@@ -241,7 +269,7 @@ Key strategies:
 
 ---
 
-### Slide 14: 140+ scientific skills are available for research
+### Slide 15: 140+ scientific skills are available for research
 
 **Title**: 140+ scientific skills cover databases, packages, and integrations
 
@@ -258,7 +286,7 @@ Categories: Bioinformatics, Cheminformatics, Clinical Research, ML/AI
 
 ---
 
-### Slide 15: The MCP debate reveals a context trade-off
+### Slide 16: The MCP debate reveals a context trade-off
 
 **Title**: MCP servers can waste 7-9% of context window with unused tool descriptions
 
@@ -279,7 +307,7 @@ Categories: Bioinformatics, Cheminformatics, Clinical Research, ML/AI
 
 ---
 
-### Slide 16: Git worktree enables parallel Claude Code sessions
+### Slide 17: Git worktree enables parallel Claude Code sessions
 
 **Title**: Once workflows are automated, git worktree enables running multiple sessions in parallel
 
@@ -308,7 +336,7 @@ cd ../feature-tests && claude
 
 ---
 
-### Slide 17: Parallelization is the next efficiency multiplier
+### Slide 18: Parallelization is the next efficiency multiplier
 
 **Title**: Workflow → Context → Parallelization: three pillars of agent-era efficiency
 
@@ -333,7 +361,7 @@ cd ../feature-tests && claude
 
 ---
 
-### Slide 18: Installation is a single npm command
+### Slide 19: Installation is a single npm command
 
 **Title**: Getting started requires one npm install and authentication
 
@@ -353,7 +381,7 @@ First run: authenticate, create ~/.claude/, optionally run /init
 
 ---
 
-### Slide 19: Subscription plans scale from $20 to $200/month
+### Slide 20: Subscription plans scale from $20 to $200/month
 
 **Title**: Subscription plans range from Pro ($20) to Max 20x ($200) based on usage needs
 
@@ -372,7 +400,7 @@ Usage shared across Claude web, desktop, and Code.
 
 ---
 
-### Slide 20: The statusline shows real-time session data
+### Slide 21: The statusline shows real-time session data
 
 **Title**: A customizable statusline displays model, cost, and tokens in real-time
 
@@ -391,7 +419,7 @@ Setup: `/statusline show the model name and context usage percentage`
 
 ---
 
-### Slide 21: The /status command provides a session dashboard
+### Slide 22: The /status command provides a session dashboard
 
 **Title**: The /status command shows session info, config, and usage in tabs
 
@@ -409,7 +437,7 @@ Three tabs:
 
 ---
 
-### Slide 22: CLAUDE.md provides project-specific context
+### Slide 23: CLAUDE.md provides project-specific context
 
 **Title**: CLAUDE.md files give Claude persistent project-specific context at every session
 
@@ -434,7 +462,7 @@ Hierarchy: ~/.claude/ → parent → project → subdirectory
 
 ---
 
-### Slide 23: Four permission modes balance control and convenience
+### Slide 24: Four permission modes balance control and convenience
 
 **Title**: Four permission modes let you choose the right balance of control and convenience
 
@@ -454,7 +482,7 @@ Switch with `Shift+Tab`
 
 ---
 
-### Slide 24: Granular rules provide fine-grained control
+### Slide 25: Granular rules provide fine-grained control
 
 **Title**: Granular allow/deny/ask rules in settings.json provide fine-grained control
 
@@ -477,7 +505,7 @@ Evaluation order: deny → allow → ask
 
 ---
 
-### Slide 25: Hooks enable custom permission logic
+### Slide 26: Hooks enable custom permission logic
 
 **Title**: Hooks let you run custom scripts before and after tool execution
 
@@ -501,7 +529,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 26: Three elements create the security risk surface
+### Slide 27: Three elements create the security risk surface
 
 **Title**: The "Lethal Trifecta" identifies three elements that create data theft risk
 
@@ -518,7 +546,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 27: Cursor and Claude Code represent different paradigms
+### Slide 28: Cursor and Claude Code represent different paradigms
 
 **Title**: Cursor is an AI assistant; Claude Code is an autonomous agent
 
@@ -537,7 +565,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 28: The choice reflects your mental model of development
+### Slide 29: The choice reflects your mental model of development
 
 **Title**: If you think in files and edits, use Cursor; if you think in tasks and outcomes, use Claude Code
 
@@ -560,7 +588,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 29: The alternatives landscape includes several strong options
+### Slide 30: The alternatives landscape includes several strong options
 
 **Title**: Alternatives like OpenCode, Aider, and Gemini CLI offer different trade-offs
 
@@ -578,7 +606,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 30: Benchmark scores show performance differences
+### Slide 31: Benchmark scores show performance differences
 
 **Title**: Claude Code with Opus 4.5 leads SWE-bench at 80.9%
 
@@ -602,7 +630,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 31: This presentation was built using the workflow we've described
+### Slide 32: This presentation was built using the workflow we've described
 
 **Title**: This presentation demonstrates the workflow: CLAUDE.md → research → topics → PPTX
 
@@ -627,7 +655,7 @@ docs/PRESENTATION.md (slide outline)
 
 ---
 
-### Slide 32: Git commit history shows the iterative process
+### Slide 33: Git commit history shows the iterative process
 
 **Title**: Each meaningful change was committed, documenting the human-agent collaboration
 
@@ -647,7 +675,7 @@ Key commits:
 
 ---
 
-### Slide 33: Live demonstration placeholder
+### Slide 34: Live demonstration placeholder
 
 **Title**: [Live Demo] Claude Code workflow on a practical task
 
@@ -664,27 +692,81 @@ Demo options:
 
 ---
 
+## Act 6: Future Directions
+
+---
+
+### Slide 35: The future is iterative loops that run until completion
+
+**Title**: Ralph-Wiggum: iterative loops that treat failure as data, not exit condition
+
+**Content**:
+> "A simple while loop that repeatedly feeds an AI agent a prompt until completion"
+
+**Key concepts**:
+- Deterministic stopping criteria (not "try once and fail")
+- Failure-as-data philosophy: setbacks guide refinement
+- Prompt-centric design: "LLMs are mirrors of operator skill"
+
+**Emerging patterns**:
+- Overnight automation for well-defined greenfield projects
+- Parallel Ralph loops across git worktrees
+- Iterative guardrail refinement based on observed failures
+
+**Figure**: [figures/ralph-wiggum-screenshot.png](../figures/ralph-wiggum-screenshot.png)
+
+**Notes**: Show the awesomeclaude.ai/ralph-wiggum page. This is where agent workflows are heading.
+
+**Source**: [topics/13-future-directions.md](topics/13-future-directions.md)
+
+---
+
+### Slide 36: This is about adopting a new way of thinking
+
+**Title**: The future is here—adoption to a new way of thinking is the primary challenge
+
+**Content**:
+**What's changing**:
+| Old Thinking | New Thinking |
+|--------------|--------------|
+| Write code myself | Design workflows that write code |
+| One-shot prompts | Iterative loops until done |
+| Static instructions | Continuously improved artifacts |
+| Single session | Parallel agents on worktrees |
+
+**The call to action**:
+- Start with CLAUDE.md on one project
+- Refine it over 5-10 sessions
+- Share learnings with the team
+- Build team-wide skills and patterns
+
+**Notes**: The adoption challenge is mindset, not technology. The tools exist.
+
+**Source**: [topics/13-future-directions.md](topics/13-future-directions.md)
+
+---
+
 ## Closing
 
 ---
 
-### Slide 34: Key takeaways
+### Slide 37: Key takeaways
 
-**Title**: Key takeaways: agent paradigm, context engineering, workflow design, and parallelization
+**Title**: Key takeaways: compound efficiency through workflow, context, and parallelization
 
 **Content**:
 1. Claude Code = LLM + filesystem access = general agent
-2. Context engineering is the fundamental skill
-3. Workflow design > coding syntax
+2. Workflows compound—every CLAUDE.md update makes the system smarter
+3. Context engineering is the fundamental skill
 4. Parallelization via git worktree multiplies efficiency
-5. Match tool to mental model (assistant vs agent)
-6. Start with granular permissions, not YOLO mode
+5. The future is iterative loops that run until completion
+6. Adoption is the challenge—the technology is here
 
-**Notes**: Reinforce the three pillars: Workflow → Context → Parallelization.
+**Notes**: The message: compound efficiency through continuous improvement. The future is here.
 
 ---
 
-### Slide 35: Resources and next steps
+### Slide 38: Resources and next steps
 
 **Title**: Resources for getting started with Claude Code
 
@@ -703,7 +785,7 @@ Demo options:
 
 ---
 
-### Slide 36: Questions and discussion
+### Slide 39: Questions and discussion
 
 **Title**: Questions?
 
@@ -777,10 +859,23 @@ Available servers: GitHub, databases, APIs
 
 ## Figure Index
 
-| Slide | Figure | Path |
-|-------|--------|------|
-| 10 | Usage Tab | [figures/status-tab-usage.png](../figures/status-tab-usage.png) |
-| 21 | Status Tab | [figures/status-tab-status.png](../figures/status-tab-status.png) |
+| Slide | Figure | Path | Status |
+|-------|--------|------|--------|
+| 4 | Workflow Improvement Loop | [figures/workflow-improvement-loop.png](../figures/workflow-improvement-loop.png) | TO CREATE |
+| 11 | Usage Tab | [figures/status-tab-usage.png](../figures/status-tab-usage.png) | EXISTS |
+| 22 | Status Tab | [figures/status-tab-status.png](../figures/status-tab-status.png) | EXISTS |
+| 35 | Ralph-Wiggum Screenshot | [figures/ralph-wiggum-screenshot.png](../figures/ralph-wiggum-screenshot.png) | TO CAPTURE |
+
+### Blogpost Screenshots to Capture
+
+For visual impact, capture screenshots from these key sources:
+
+| Source | URL | Purpose |
+|--------|-----|---------|
+| Mike.tech | mike.tech/blog/death-of-software-development | "Death of Software Development" blog post |
+| Simon Willison | simonwillison.net/2025/Oct/16/claude-skills/ | Claude Skills introduction |
+| Ralph-Wiggum | awesomeclaude.ai/ralph-wiggum | Future directions / iterative loops |
+| Mario Zechner | mariozechner.at/posts/2025-11-30-pi-coding-agent/ | Minimal toolset insight |
 
 ---
 
@@ -788,15 +883,16 @@ Available servers: GitHub, databases, APIs
 
 | Section | Slides |
 |---------|--------|
-| Act 1: The Shift | 5 |
+| Act 1: The Shift (inc. compounding) | 6 |
 | Act 1.5: LLM + Filesystem | 2 |
 | Act 2: Constraint | 3 |
 | Act 3: Solutions + Parallelization | 7 |
 | Act 4: Practical | 13 |
 | Act 5: Demo | 3 |
+| Act 6: Future Directions | 2 |
 | Closing | 3 |
 | Appendix | 3 |
-| **Total** | **39** |
+| **Total** | **42** |
 
 ---
 
