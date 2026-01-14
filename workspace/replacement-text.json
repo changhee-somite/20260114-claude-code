@@ -1,0 +1,1508 @@
+{
+  "slide-0": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Claude Code: From Coding to Workflow Design",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Internal Computational Team\nJanuary 2026",
+          "alignment": "CENTER"
+        }
+      ]
+    }
+  },
+  "slide-1": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "The Old vs New Mental Model",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Old: Developer writes code line by line",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "New: Developer describes outcomes",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Old: IDE assists with autocomplete",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "New: Agent plans and executes",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Old: Human is the executor",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "New: Human supervises and validates",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-2": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Engineers Design Systems, Not Write Code",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "One person built a Polymarket tool in 2 hours without writing code",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "The technique mattered more than which AI was used",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Architecture and process design become primary skills",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"The outcome is defined by the process, not the model.\" \u2014 Mike.tech",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-3": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Communicate Intent, Not Implementation",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Use XML tags: <task>, <context>, <constraints>, <output_format>",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Code-Level: \"Write a function that...\" \u2192 Focus on implementation",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Abstract: \"I need to transform X into Y\" \u2192 Focus on intent",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"It's like I was driving a race car in first gear.\"",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-4": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Compound Efficiency Through Updates",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Session 1: Write CLAUDE.md with basic project context",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Session 5: Add common commands, conventions, warnings",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "Session 20: Refined skills, custom hooks, team patterns",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "Session 100: Agent works like a trained team member",
+          "bullet": true,
+          "level": 1
+        }
+      ]
+    }
+  },
+  "slide-5": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Claude Code: A General Agent Timeline",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "February 2025: Launch as CLI research preview",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "October 2025: Web launch on claude.ai",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "November 2025: $1B revenue run-rate",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "January 2026: Multi-agent infrastructure (v2.1.0)",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-6": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Automate Anything You Can Type",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "File system access (read, write, edit)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Command execution (shell access)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Context awareness (understands project structure)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Autonomous operation (minimal supervision)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"Agents are tools in a loop\" \u2014 Simon Willison",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-7": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "LLM + File System Access = Agent",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Web Chatbot: Stateless, copy-paste snippets",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Claude Code: Persistent filesystem, direct file read/write",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Web Chatbot: Human describes and executes",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Claude Code: Agent explores and executes",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"An LLM with permission to access a file system\" \u2014 Willison",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-8": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Simplicity Is the Feature",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "No heavyweight protocols needed",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Skills are just markdown files the agent reads",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Four tools (read, write, edit, bash) outperform complex ecosystems",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Outsources hard parts to the LLM harness and environment",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-9": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "The Hard Context Limit",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Attention mechanism scales quadratically O(N\u00b2)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Context window is a hard limit on what the model can \"see\"",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Everything must fit in this window",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Wasted tokens = reduced capability",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-10": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Context Engineering Is Fundamental",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Minimal system prompts: <1,000 tokens vs competitors' 10,000+",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "File-based planning: External markdown preserves info",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Progressive disclosure: Load tool docs only when needed",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Pre-session artifacts: Research \u2192 implementation sessions",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-11": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Monitor Context with /status",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Current session: percentage of context window used",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Session reset: when the 5-hour window resets",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Weekly usage across Opus and Sonnet models",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Demo the /status command",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-12": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Subagents: Fresh Context Windows",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Each subagent gets its own fresh context window",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Example: 36 files \u00f7 3 subagents = 12 files each",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Prevents main agent from sequential overload",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Enables parallel processing",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-13": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Taxonomy of Agentic Patterns",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Context & Memory: Context-minimization, dynamic injection",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Feedback Loops: Self-critique, reflection, spec-as-test",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Orchestration: Plan-then-execute, phase separation",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Tool Use: CLI-first, code-over-API",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-14": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Skills: Markdown Instructions On-Demand",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Just markdown files with YAML metadata",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Brief summaries scanned before full load",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Shareable across models and tools",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "No heavyweight protocols",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-15": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "140+ Scientific Skills Available",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "28+ Scientific databases (OpenAlex, PubMed, ChEMBL, UniProt)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "55+ Python packages (RDKit, Scanpy, PyTorch)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "15+ Scientific integrations (Benchling, DNAnexus)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Categories: Bioinformatics, Cheminformatics, ML/AI",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-16": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "MCP: Convenience vs Context Trade-off",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Anti-MCP: Tools you never use still consume tokens",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Alternative: CLI tools with README loaded on-demand",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Pro-MCP: Convenience of always-available tools",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "7-9% context window overhead for unused tools",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-17": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Git Worktree: Parallel Sessions",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "git worktree add ../feature-auth feature/auth",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "git worktree add ../feature-api feature/api",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Run Claude Code in each (separate terminals)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Boris Cherny runs 5 Claudes in parallel!",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-18": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Three Pillars of Agent Efficiency",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1. Workflow Design: Define what agents should do",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "2. Context Engineering: Optimize what agents can see",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "3. Parallelization: Scale by running multiple agents",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Trust the workflow, then multiply it",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-19": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Getting Started: One Command",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "npm install -g @anthropic-ai/claude-code",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "claude --version",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "cd your-project && claude",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "First run: authenticate, create ~/.claude/, run /init",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-20": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Subscription Plans: $20-$200/month",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Pro: $20/month \u2014 Light usage, small repos",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Max 5x: $100/month \u2014 Moderate usage, larger repos",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Max 20x: $200/month \u2014 Heavy usage, complex projects",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Usage shared across Claude web, desktop, and Code",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-21": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Statusline: Real-time Monitoring",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "model.display_name: Current model",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "tokens.input / tokens.output: Token counts",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "cost.current / cost.total: Cost tracking",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Setup: /statusline show model and context usage",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-22": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "/status Command: Session Dashboard",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Status: Version, session ID, model, MCP servers, memory",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Config: Preferences, theme, checkpoints",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Usage: Context percentage, weekly limits",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Demo: Switch between tabs with Tab key",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-23": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "CLAUDE.md: Project-Specific Context",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "# Project Name, ## Tech Stack, ## Commands, ## Conventions",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Example: Python 3.11, FastAPI, PostgreSQL",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "Example: pytest tests/, uvicorn main:app --reload",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "Hierarchy: ~/.claude/ \u2192 parent \u2192 project \u2192 subdirectory",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-24": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Four Permission Modes",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "default: Prompts for first use of each tool",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "acceptEdits: Auto-accepts file edits for session",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "plan: Read-only analysis, no modifications",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "bypassPermissions: Skips all prompts (safe only)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Switch with Shift+Tab",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-25": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Granular Permission Rules",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "allow: [\"Bash(npm run test:*)\", \"Bash(git:*)\"]",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "deny: [\"Read(./.env)\", \"Read(**/*.key)\"]",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "ask: [\"Bash(git push:*)\", \"Bash(rm:*)\"]",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Evaluation order: deny \u2192 allow \u2192 ask",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-26": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Hooks: Custom Tool Logic",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "PreToolUse: Run validator before Bash commands",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "PostToolUse: Run scripts after tool execution",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "PermissionRequest: Custom permission logic",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Can block, modify, or auto-approve",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-27": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "The \"Lethal Trifecta\" Security Risk",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1. Access to private data (env vars, credentials)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "2. Exposure to untrusted content (web, user input)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "3. External communication ability (network access)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"Text into your LLM = control over tools\"",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-28": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Cursor vs Claude Code",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Paradigm: Enhanced IDE vs Autonomous Agent",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Interface: GUI (VS Code fork) vs CLI",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Model: User-selectable vs Claude (optimized)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Execution: User-initiated vs Autonomous",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Context: IDE-provided vs Full filesystem + shell",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-29": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "When to Use Each Tool",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Cursor: Quick inline edits, code explanation, GUI preference",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Claude Code: Multi-file refactoring, autonomous completion",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Claude Code: Pipeline automation, shell tasks",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Many developers use both for different contexts",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-30": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Alternative Tools Comparison",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "OpenCode: 75+ providers, free \u2014 Budget, model flexibility",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Aider: Code graph, git \u2014 Monorepos, explicit control",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Gemini CLI: 1M context, free tier \u2014 Google Cloud, docs",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Codex CLI: GitHub Actions \u2014 CI/CD integration",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-31": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "SWE-bench Performance",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Claude Code + Opus 4.5: 80.9%",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Aider: 67%",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Cline: 63%",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Gemini 2.5 Pro: 63.8%",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Benchmarks vary by methodology",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-32": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "This Presentation: The Workflow",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "CLAUDE.md \u2192 scratch/SCRATCH.md (raw notes)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "docs/topics/*.md (organized knowledge)",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "docs/NARRATIVE.md (flow structure)",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "docs/PRESENTATION.md (slide outline)",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "*.pptx (Skills-generated output)",
+          "bullet": true,
+          "level": 1
+        }
+      ]
+    }
+  },
+  "slide-33": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Git Commits Document Collaboration",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1. Initial scaffolding",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "2. Phase 1: Research compilation",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "3. Additional research: permissions, alternatives",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "4. Narrative structure",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "5. Slide outline generation",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-34": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "[Live Demo] Practical Workflow",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1. Show /status, /statusline commands",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "2. Install a skill via /plugin",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "3. Run /init on a sample project",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "4. Simple code modification task",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-35": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Ralph-Wiggum: Iterative Loops",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "\"While loop that feeds AI agent a prompt until completion\"",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Deterministic stopping criteria",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Failure-as-data: setbacks guide refinement",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"LLMs are mirrors of operator skill\"",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-36": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Adoption Is the Challenge",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Old: Write code myself \u2192 New: Design workflows",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Old: One-shot prompts \u2192 New: Iterative loops",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Old: Static instructions \u2192 New: Improved artifacts",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Old: Single session \u2192 New: Parallel agents",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-37": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Key Takeaways",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1. Claude Code = LLM + filesystem = general agent",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "2. Workflows compound with each CLAUDE.md update",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "3. Context engineering is fundamental",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "4. Git worktree enables parallelization",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "5. Future: iterative loops until completion",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-38": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Resources",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Official: code.claude.com/docs",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "DeepLearning.ai Course",
+          "bullet": true,
+          "level": 1
+        },
+        {
+          "text": "Skills: github.com/anthropics/skills",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "K-Dense-AI/claude-scientific-skills",
+          "bullet": true,
+          "level": 1
+        }
+      ]
+    }
+  },
+  "slide-39": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Questions?",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "How might this change our team's workflows?",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "What tasks benefit most from agent automation?",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Security considerations for our environment",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Skill development for our specific use cases",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-40": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Appendix: Four Core Tools",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "Read: File contents, images, PDFs",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Write: Create new files",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Edit: String replacement in files",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Bash: Shell command execution",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "\"Four tools outperform complex ecosystems\" \u2014 Zechner",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-41": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Appendix: MCP Server Setup",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "/plugin install @anthropic-ai/mcp-server-github",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "/plugin install @anthropic-ai/mcp-server-context7",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Available servers: GitHub, databases, APIs",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Trade-off: Convenience vs context overhead",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  },
+  "slide-42": {
+    "shape-0": {
+      "paragraphs": [
+        {
+          "text": "Appendix: Gemini CLI",
+          "bold": true
+        }
+      ]
+    },
+    "shape-1": {
+      "paragraphs": [
+        {
+          "text": "1 million token context window",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "60 requests/minute, 1000/day (free)",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Deep Google Cloud integration",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Lower SWE-bench scores than Claude",
+          "bullet": true,
+          "level": 0
+        },
+        {
+          "text": "Best for: Google Cloud, documentation, exploration",
+          "bullet": true,
+          "level": 0
+        }
+      ]
+    }
+  }
+}
