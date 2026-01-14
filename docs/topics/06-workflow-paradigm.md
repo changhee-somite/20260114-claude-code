@@ -59,6 +59,35 @@ Use external files (plans, to-do lists) rather than relying on in-session memory
 | Model capability | Workflow refinement |
 | Writing code | Describing outcomes |
 
+## Think in Abstractions, Not Code
+
+A key insight from XML-structured prompting: communicate with Claude at the **intent level**, not the code level.
+
+### Structure Your Thinking
+
+```xml
+<task>What you want Claude to do</task>
+<context>Background information it needs</context>
+<constraints>Any limits or rules</constraints>
+<output_format>How you want the answer</output_format>
+```
+
+> "It's like I was driving a race car in first gear the whole time."
+> — Reddit user discovering structured prompting
+
+### Why This Matters
+
+| Code-Level Thinking | Abstract Thinking |
+|--------------------|--------------------|
+| "Write a function that..." | "I need to transform X into Y" |
+| Focus on implementation | Focus on intent |
+| One solution path | Multiple approaches possible |
+| Agent constrained by your code ideas | Agent brings its own solutions |
+
+**Key insight:** The more abstractly you communicate, the more leverage you give the agent to find optimal solutions.
+
+---
+
 ## The Compound Improvement Loop
 
 Workflows aren't static—they improve over time:

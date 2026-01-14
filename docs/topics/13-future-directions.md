@@ -101,6 +101,32 @@ The technology is here. The challenge is adoption:
 3. **Share learnings**: Team-wide skills and patterns
 4. **Build trust**: Let results speak for themselves
 
+## Structured Multi-Agent Frameworks: BMAD-METHOD
+
+Beyond Claude Code's general-purpose approach, structured frameworks are emerging:
+
+### BMAD-METHOD (29.7k GitHub stars)
+
+A free, open-source AI-driven agile development framework:
+
+**Key Features:**
+- **21 Specialized Agents**: PM, Architect, Developer, UX, Scrum Master, etc.
+- **Scale-Adaptive Intelligence**: Levels 0-4 based on project complexity
+- **50+ Structured Workflows**: Grounded in agile best practices
+- **Complete Lifecycle Coverage**: Ideation through deployment
+
+**Philosophy:**
+> "Agents act as expert collaborators who guide you through structured workflows to bring out your best thinking."
+
+**Relevance:**
+- Shows where multi-agent orchestration is heading
+- More opinionated than Claude Code's general approach
+- Could complement Claude Code for large-scale projects
+
+**Link:** [github.com/bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)
+
+---
+
 ## What This Means for Our Team
 
 ### Near-Term (Now)
@@ -120,6 +146,7 @@ The technology is here. The challenge is adoption:
 - Overnight batch processing
 - Iterative loops for research
 - Agent-driven CI/CD augmentation
+- Explore structured frameworks like BMAD-METHOD for complex projects
 
 ## The Call to Action
 
