@@ -279,11 +279,61 @@ Categories: Bioinformatics, Cheminformatics, Clinical Research, ML/AI
 
 ---
 
+### Slide 16: Git worktree enables parallel Claude Code sessions
+
+**Title**: Once workflows are automated, git worktree enables running multiple sessions in parallel
+
+**Content**:
+```bash
+# Create parallel worktrees for independent tasks
+git worktree add ../feature-auth feature/auth
+git worktree add ../feature-api feature/api
+git worktree add ../refactor-tests refactor/tests
+
+# Run Claude Code in each (separate terminals)
+cd ../feature-auth && claude
+cd ../feature-api && claude
+cd ../feature-tests && claude
+```
+
+| Single Session | Parallel Sessions |
+|----------------|-------------------|
+| Sequential task completion | Simultaneous progress |
+| One context window | Multiple fresh contexts |
+| Blocking on long tasks | Non-blocking workflow |
+
+**Notes**: This is unconventional but powerful—treat Claude Code sessions like parallel workers.
+
+**Source**: [topics/12-parallel-sessions.md](topics/12-parallel-sessions.md)
+
+---
+
+### Slide 17: Parallelization is the next efficiency multiplier
+
+**Title**: Workflow → Context → Parallelization: three pillars of agent-era efficiency
+
+**Content**:
+**Progression**:
+1. **Workflow Design**: Define what agents should do
+2. **Context Engineering**: Optimize what agents can see
+3. **Parallelization**: Scale by running multiple agents
+
+**Practical patterns**:
+- Feature branches in separate worktrees
+- Research session + implementation session simultaneously
+- Run tests in one session while developing in another
+
+**Notes**: Once you trust the workflow, multiplying it becomes the obvious next step.
+
+**Source**: [topics/12-parallel-sessions.md](topics/12-parallel-sessions.md)
+
+---
+
 ## Act 4: Practical Setup and Considerations
 
 ---
 
-### Slide 16: Installation is a single npm command
+### Slide 18: Installation is a single npm command
 
 **Title**: Getting started requires one npm install and authentication
 
@@ -303,7 +353,7 @@ First run: authenticate, create ~/.claude/, optionally run /init
 
 ---
 
-### Slide 17: Subscription plans scale from $20 to $200/month
+### Slide 19: Subscription plans scale from $20 to $200/month
 
 **Title**: Subscription plans range from Pro ($20) to Max 20x ($200) based on usage needs
 
@@ -322,7 +372,7 @@ Usage shared across Claude web, desktop, and Code.
 
 ---
 
-### Slide 18: The statusline shows real-time session data
+### Slide 20: The statusline shows real-time session data
 
 **Title**: A customizable statusline displays model, cost, and tokens in real-time
 
@@ -341,7 +391,7 @@ Setup: `/statusline show the model name and context usage percentage`
 
 ---
 
-### Slide 19: The /status command provides a session dashboard
+### Slide 21: The /status command provides a session dashboard
 
 **Title**: The /status command shows session info, config, and usage in tabs
 
@@ -359,7 +409,7 @@ Three tabs:
 
 ---
 
-### Slide 20: CLAUDE.md provides project-specific context
+### Slide 22: CLAUDE.md provides project-specific context
 
 **Title**: CLAUDE.md files give Claude persistent project-specific context at every session
 
@@ -384,7 +434,7 @@ Hierarchy: ~/.claude/ → parent → project → subdirectory
 
 ---
 
-### Slide 21: Four permission modes balance control and convenience
+### Slide 23: Four permission modes balance control and convenience
 
 **Title**: Four permission modes let you choose the right balance of control and convenience
 
@@ -404,7 +454,7 @@ Switch with `Shift+Tab`
 
 ---
 
-### Slide 22: Granular rules provide fine-grained control
+### Slide 24: Granular rules provide fine-grained control
 
 **Title**: Granular allow/deny/ask rules in settings.json provide fine-grained control
 
@@ -427,7 +477,7 @@ Evaluation order: deny → allow → ask
 
 ---
 
-### Slide 23: Hooks enable custom permission logic
+### Slide 25: Hooks enable custom permission logic
 
 **Title**: Hooks let you run custom scripts before and after tool execution
 
@@ -451,7 +501,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 24: Three elements create the security risk surface
+### Slide 26: Three elements create the security risk surface
 
 **Title**: The "Lethal Trifecta" identifies three elements that create data theft risk
 
@@ -468,7 +518,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 25: Cursor and Claude Code represent different paradigms
+### Slide 27: Cursor and Claude Code represent different paradigms
 
 **Title**: Cursor is an AI assistant; Claude Code is an autonomous agent
 
@@ -487,7 +537,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 26: The choice reflects your mental model of development
+### Slide 28: The choice reflects your mental model of development
 
 **Title**: If you think in files and edits, use Cursor; if you think in tasks and outcomes, use Claude Code
 
@@ -510,7 +560,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 27: The alternatives landscape includes several strong options
+### Slide 29: The alternatives landscape includes several strong options
 
 **Title**: Alternatives like OpenCode, Aider, and Gemini CLI offer different trade-offs
 
@@ -528,7 +578,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 28: Benchmark scores show performance differences
+### Slide 30: Benchmark scores show performance differences
 
 **Title**: Claude Code with Opus 4.5 leads SWE-bench at 80.9%
 
@@ -552,7 +602,7 @@ Events: PreToolUse, PostToolUse, PermissionRequest
 
 ---
 
-### Slide 29: This presentation was built using the workflow we've described
+### Slide 31: This presentation was built using the workflow we've described
 
 **Title**: This presentation demonstrates the workflow: CLAUDE.md → research → topics → PPTX
 
@@ -577,7 +627,7 @@ docs/PRESENTATION.md (slide outline)
 
 ---
 
-### Slide 30: Git commit history shows the iterative process
+### Slide 32: Git commit history shows the iterative process
 
 **Title**: Each meaningful change was committed, documenting the human-agent collaboration
 
@@ -597,7 +647,7 @@ Key commits:
 
 ---
 
-### Slide 31: Live demonstration placeholder
+### Slide 33: Live demonstration placeholder
 
 **Title**: [Live Demo] Claude Code workflow on a practical task
 
@@ -618,22 +668,23 @@ Demo options:
 
 ---
 
-### Slide 32: Key takeaways
+### Slide 34: Key takeaways
 
-**Title**: Key takeaways: agent paradigm, context engineering, and workflow design
+**Title**: Key takeaways: agent paradigm, context engineering, workflow design, and parallelization
 
 **Content**:
 1. Claude Code = LLM + filesystem access = general agent
 2. Context engineering is the fundamental skill
 3. Workflow design > coding syntax
-4. Match tool to mental model (assistant vs agent)
-5. Start with granular permissions, not YOLO mode
+4. Parallelization via git worktree multiplies efficiency
+5. Match tool to mental model (assistant vs agent)
+6. Start with granular permissions, not YOLO mode
 
-**Notes**: Reinforce the main message.
+**Notes**: Reinforce the three pillars: Workflow → Context → Parallelization.
 
 ---
 
-### Slide 33: Resources and next steps
+### Slide 35: Resources and next steps
 
 **Title**: Resources for getting started with Claude Code
 
@@ -652,7 +703,7 @@ Demo options:
 
 ---
 
-### Slide 34: Questions and discussion
+### Slide 36: Questions and discussion
 
 **Title**: Questions?
 
@@ -729,7 +780,7 @@ Available servers: GitHub, databases, APIs
 | Slide | Figure | Path |
 |-------|--------|------|
 | 10 | Usage Tab | [figures/status-tab-usage.png](../figures/status-tab-usage.png) |
-| 19 | Status Tab | [figures/status-tab-status.png](../figures/status-tab-status.png) |
+| 21 | Status Tab | [figures/status-tab-status.png](../figures/status-tab-status.png) |
 
 ---
 
@@ -740,12 +791,12 @@ Available servers: GitHub, databases, APIs
 | Act 1: The Shift | 5 |
 | Act 1.5: LLM + Filesystem | 2 |
 | Act 2: Constraint | 3 |
-| Act 3: Solutions | 5 |
+| Act 3: Solutions + Parallelization | 7 |
 | Act 4: Practical | 13 |
 | Act 5: Demo | 3 |
 | Closing | 3 |
 | Appendix | 3 |
-| **Total** | **37** |
+| **Total** | **39** |
 
 ---
 

@@ -96,33 +96,40 @@ We are at an inflection point where the old mental model of "coding" is being re
    - Counter-argument: on-demand CLI tools
    - Trade-off: convenience vs context efficiency
 
+10. **Parallel Sessions with Git Worktree** (5 min)
+    - Once workflows are semi-automated, parallelization becomes possible
+    - Git worktree enables multiple working directories from same repo
+    - Run independent Claude Code sessions simultaneously
+    - Three pillars: Workflow → Context → Parallelization
+    - Topic: [12-parallel-sessions.md](topics/12-parallel-sessions.md)
+
 ---
 
 ### Act 4: Practical Setup and Considerations
 
 **Grounding:** How do we actually set up and use this effectively?
 
-10. **Setup & Configuration** (5 min)
+11. **Setup & Configuration** (5 min)
     - `/statusline` for real-time feedback (tokens, cost, model)
     - `/plugin` for skills marketplace
     - CLAUDE.md for project context
     - AGENTS.md as cross-platform standard
     - Topic: [10-setup-and-configuration.md](topics/10-setup-and-configuration.md)
 
-11. **Permissions & Safety** (5 min)
+12. **Permissions & Safety** (5 min)
     - Four permission modes (default, acceptEdits, plan, bypass)
     - Granular configuration via settings.json
     - Hooks for custom logic
     - The "Lethal Trifecta" security model
     - Topic: [03-permissions-and-safety.md](topics/03-permissions-and-safety.md)
 
-12. **Cursor vs Claude Code** (5 min)
+13. **Cursor vs Claude Code** (5 min)
     - Assistant (Cursor) vs Agent (Claude Code)
     - "If you think in files and edits: Cursor"
     - "If you think in tasks and outcomes: Claude Code"
     - Topic: [07-cursor-vs-claude-code.md](topics/07-cursor-vs-claude-code.md)
 
-13. **Alternatives Landscape** (3 min)
+14. **Alternatives Landscape** (3 min)
     - OpenCode: model flexibility, open source
     - Aider: terminal-first, explicit control
     - Gemini CLI: free tier, large context
@@ -134,12 +141,12 @@ We are at an inflection point where the old mental model of "coding" is being re
 
 **Live Proof:** This presentation was built using the workflow.
 
-14. **This Presentation as Workflow Demo** (5 min)
+15. **This Presentation as Workflow Demo** (5 min)
     - Show git commit history
     - CLAUDE.md → SCRATCH.md → topics → PRESENTATION.md → PPTX
     - Human provides direction; agent executes and synthesizes
 
-15. **Internal Coding Example** (5-10 min)
+16. **Internal Coding Example** (5-10 min)
     - Practical work with ~/fastq_analysis/utilities
     - [Placeholder: specific example to be filled]
     - Topic: [09-practical-examples.md](topics/09-practical-examples.md)
@@ -148,14 +155,15 @@ We are at an inflection point where the old mental model of "coding" is being re
 
 ### Closing
 
-16. **Key Takeaways** (2 min)
+17. **Key Takeaways** (2 min)
     - Claude Code = LLM + filesystem access = general agent
     - Context engineering is the fundamental skill
     - Workflow design > coding syntax
+    - Parallelization via git worktree multiplies efficiency
     - Match tool to mental model (assistant vs agent)
     - Start with granular permissions, not YOLO
 
-17. **Resources & Next Steps** (1 min)
+18. **Resources & Next Steps** (1 min)
     - Link to this repository
     - Tutorial resources
     - Open questions for discussion
@@ -176,7 +184,10 @@ Every feature (subagents, skills, modes) derives from the context window constra
 ### Theme 4: Old Thinking → New Thinking
 We're changing behaviors, not just tools.
 
-### Theme 5: Practical Grounding
+### Theme 5: Three Pillars of Efficiency
+Workflow → Context → Parallelization. Each builds on the previous.
+
+### Theme 6: Practical Grounding
 Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 ---
@@ -185,14 +196,15 @@ Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 | Act | Topic Count | Est. Slides |
 |-----|-------------|-------------|
-| Act 1: The Shift | 3 | 6-8 |
-| Act 1.5: LLM + Filesystem | 1 | 3-4 |
-| Act 2: Constraint | 2 | 4-5 |
-| Act 3: Solutions | 3 | 8-10 |
-| Act 4: Practical | 4 | 8-10 |
-| Act 5: Demo | 2 | 4-6 |
-| Closing | 2 | 2-3 |
-| **Total** | **17** | **35-46** |
+| Act 1: The Shift | 3 | 5 |
+| Act 1.5: LLM + Filesystem | 1 | 2 |
+| Act 2: Constraint | 2 | 3 |
+| Act 3: Solutions + Parallelization | 4 | 7 |
+| Act 4: Practical | 4 | 13 |
+| Act 5: Demo | 2 | 3 |
+| Closing | 2 | 3 |
+| Appendix | 3 | 3 |
+| **Total** | **21** | **39** |
 
 ---
 
@@ -200,9 +212,9 @@ Abstract concepts anchored in real examples (this presentation, fastq_analysis).
 
 | Section | Time |
 |---------|------|
-| Acts 1-1.5 (The shift, key insight) | 15 min |
+| Acts 1-1.5 (The shift, key insight) | 12 min |
 | Act 2 (Constraint) | 8 min |
-| Act 3 (Technical solutions) | 13 min |
+| Act 3 (Solutions + Parallelization) | 15 min |
 | Act 4 (Practical setup) | 18 min |
 | Act 5 (Demo) | 10-15 min |
 | Closing + Q&A | 5-10 min |
