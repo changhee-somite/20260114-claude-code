@@ -3,13 +3,21 @@
 ## Purpose
 Internal presentation (30-60 min) for a computational team already familiar with coding agents and Cursor IDE. Goal: introduce Claude Code and demonstrate effective workflows.
 
-## Narrative Structure
+## Key Documents
 
-See **[NARRATIVE.md](NARRATIVE.md)** for the presentation flow and storyline.
+| Document | Purpose |
+|----------|---------|
+| **[NARRATIVE.md](NARRATIVE.md)** | Presentation flow and storyline (5-act structure) |
+| **[DECISIONS.md](DECISIONS.md)** | Session decisions, preferences, continuation instructions |
 
 **Core Thesis:** We're shifting from "coding" to "workflow design," driven by the fundamental context window constraint.
 
 **Key Insight:** Claude Code is "an LLM that got permission to access a file system" — this transforms it from chatbot to general agent.
+
+**Presentation Preferences:**
+- Tone: Balanced mix (technical + accessible)
+- Demo: Flexible (prepare both options)
+- Emphasis: Context engineering theory, Workflow paradigm shift
 
 ## Topic Documentation
 
