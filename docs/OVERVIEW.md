@@ -9,6 +9,8 @@ See **[NARRATIVE.md](NARRATIVE.md)** for the presentation flow and storyline.
 
 **Core Thesis:** We're shifting from "coding" to "workflow design," driven by the fundamental context window constraint.
 
+**Key Insight:** Claude Code is "an LLM that got permission to access a file system" — this transforms it from chatbot to general agent.
+
 ## Topic Documentation
 
 | # | Topic | File | Key Points |
@@ -22,6 +24,7 @@ See **[NARRATIVE.md](NARRATIVE.md)** for the presentation flow and storyline.
 | 7 | Cursor vs Claude Code | [topics/07-cursor-vs-claude-code.md](topics/07-cursor-vs-claude-code.md) | Assistant vs Agent paradigm |
 | 8 | Alternatives | [topics/08-alternatives-comparison.md](topics/08-alternatives-comparison.md) | OpenCode, Aider, Gemini CLI |
 | 9 | Practical Examples | [topics/09-practical-examples.md](topics/09-practical-examples.md) | This presentation, fastq_analysis |
+| 10 | Setup & Configuration | [topics/10-setup-and-configuration.md](topics/10-setup-and-configuration.md) | /statusline, /plugin, CLAUDE.md |
 
 ## Key Sources
 
@@ -40,6 +43,8 @@ See **[NARRATIVE.md](NARRATIVE.md)** for the presentation flow and storyline.
 - [Claude Code Settings Docs](https://code.claude.com/docs/en/settings)
 - [Hooks Guide](https://code.claude.com/docs/en/hooks-guide)
 - [Claude Code Permissions Guide](https://www.eesel.ai/blog/claude-code-permissions)
+- [Status Line Configuration](https://code.claude.com/docs/en/statusline)
+- [Discover Plugins](https://code.claude.com/docs/en/discover-plugins)
 
 ### Alternatives
 - [OpenCode vs Claude Code](https://www.builder.io/blog/opencode-vs-claude-code)
@@ -49,11 +54,13 @@ See **[NARRATIVE.md](NARRATIVE.md)** for the presentation flow and storyline.
 ### Tutorials
 - [DeepLearning.ai: Claude Code Course](https://www.deeplearning.ai/short-courses/claude-code-a-highly-agentic-coding-assistant/)
 - [Net Ninja YouTube Playlist](https://www.youtube.com/playlist?list=PL4cUxeGkcC9g4YJeBqChhFJwKQ9TRiivY)
+- [Using CLAUDE.md Files](https://claude.com/blog/using-claude-md-files)
 
 ## Project Status
 
 - [x] Phase 1: Research and compilation
 - [x] Phase 1.5: Additional research (permissions, alternatives, narrative)
+- [x] Phase 1.6: Setup/configuration guide, narrative refinement
 - [ ] Phase 2: PRESENTATION.md slide outline
 - [ ] Phase 3: Figure preparation
 - [ ] Phase 4: PPTX generation
