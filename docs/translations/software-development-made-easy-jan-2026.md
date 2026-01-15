@@ -245,3 +245,36 @@ Developers in 2026 no longer arm themselves with just text editors and compilers
 - Gas Town is recommended for an elite few pursuing **extreme productivity**. If you must build and operate a large system solo despite complex setup and steep learning curve, Gas Town's industrialized pipeline may be the only answer. Don't forget it's still experimental.
 
 Now software development is **'Orchestration'**. Is your baton ready?
+
+---
+
+## References
+
+### Ralph / Ralph Loop / Ralph-Wiggum
+
+- [Geoffrey Huntley's Original Ralph Post](https://ghuntley.com/ralph/) - The creator's explanation of the technique
+- [How to Ralph Wiggum (GitHub)](https://github.com/ghuntley/how-to-ralph-wiggum) - Official methodology guide
+- [Claude Code Ralph-Wiggum Plugin](https://github.com/anthropics/claude-code/blob/main/plugins/ralph-wiggum/README.md) - Anthropic's official implementation
+- [Inventing the Ralph Wiggum Loop (Interview)](https://devinterrupted.substack.com/p/inventing-the-ralph-wiggum-loop-creator) - Dev Interrupted interview with Geoffrey Huntley
+- [How Ralph Wiggum Became the Biggest Name in AI (VentureBeat)](https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now/)
+
+### Oh My OpenCode
+
+- [Oh My OpenCode (GitHub)](https://github.com/fractalmind-ai/oh-my-opencode) - Main repository
+- [Oh My OpenCode (npm)](https://www.npmjs.com/package/oh-my-opencode) - npm package
+- [OpenCode Official Site](https://opencode.ai/) - The base agent OmO builds upon
+- [OpenCode (GitHub - SST)](https://github.com/sst/opencode) - SST team's open source coding agent
+
+### Conductor
+
+- [Conductor Official Site](https://www.conductor.build/) - Mac app for parallel AI agents
+- [Conductor Review (The New Stack)](https://thenewstack.io/a-hands-on-review-of-conductor-an-ai-parallel-runner-app/) - Hands-on review
+- [The Parallel Agent Multiplier](https://elite-ai-assisted-coding.dev/p/the-parallel-agent-multiplier-conductor-with-charlie-holtz) - Interview with creator
+- [Code-Conductor (GitHub)](https://github.com/ryanmac/code-conductor) - Open-source alternative
+
+### Gas Town
+
+- [Welcome to Gas Town (Steve Yegge)](https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04) - Original announcement
+- [The Future of Coding Agents (Steve Yegge)](https://steve-yegge.medium.com/the-future-of-coding-agents-e9451a84207c) - Follow-up article
+- [Gas Town (GitHub)](https://github.com/steveyegge/gastown) - Multi-agent workspace manager
+- [Hacker News Discussion](https://news.ycombinator.com/item?id=46458936) - Community discussion
