@@ -101,9 +101,9 @@ The technology is here. The challenge is adoption:
 3. **Share learnings**: Team-wide skills and patterns
 4. **Build trust**: Let results speak for themselves
 
-## Structured Multi-Agent Frameworks: BMAD-METHOD
+## Structured Multi-Agent Frameworks
 
-Beyond Claude Code's general-purpose approach, structured frameworks are emerging:
+Beyond Claude Code's general-purpose approach, structured frameworks are emerging with distinct philosophies.
 
 ### BMAD-METHOD (29.7k GitHub stars)
 
@@ -118,12 +118,67 @@ A free, open-source AI-driven agile development framework:
 **Philosophy:**
 > "Agents act as expert collaborators who guide you through structured workflows to bring out your best thinking."
 
-**Relevance:**
-- Shows where multi-agent orchestration is heading
-- More opinionated than Claude Code's general approach
-- Could complement Claude Code for large-scale projects
-
 **Link:** [github.com/bmad-code-org/BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD)
+
+---
+
+### Gas Town: The Industrialized Coding Factory
+
+Steve Yegge's experimental system represents the most ambitious vision of AI-assisted development—running 20-30 agents simultaneously like "Kubernetes for Agents."
+
+**Core Innovation: GUPP (Gas Town Universal Propulsion Principle)**
+> "If work is on your hook, execute it."
+
+The system runs 24/7 like a factory conveyor belt, consuming the backlog without waiting for human input. This is full autonomy—humans define goals, the system executes continuously.
+
+**Hierarchical Task Management:**
+```
+Epics (grand objectives)
+  └── Molecules (executable workflows)
+        └── Beads (atomic work units)
+              └── Wisps (ephemeral one-off tasks)
+```
+
+All stored as JSON in Git—version-controlled task management that time-travels with branch switches.
+
+**Specialized Agent Roles (mimicking human organizations):**
+
+| Role | Function |
+|------|----------|
+| Mayor | Chief of staff—interprets user commands, distributes work |
+| Deacon | System health monitoring and patrols |
+| Dogs | Security watchdogs—monitor permissions and errors |
+| Witness | Observes and records agent work |
+| Refiner | Manages merge queue, resolves PR conflicts |
+| Polecats | Swarm workers—complete task, then dissolve |
+| Crew | Long-lived agents for core development |
+
+**Why It Matters:**
+Even if Gas Town isn't practical today (alpha stage, high costs, high risk), it previews patterns that may become standard:
+- Role-based agent specialization
+- Git-native task management
+- Fully autonomous execution loops
+- Human as "Director" not "Developer"
+
+**Reference:** [January 2026: Making Software Development Effortless](../translations/software-development-made-easy-jan-2026.md)
+
+---
+
+## The Evolving Human Role
+
+The translated article identifies a key pattern: **all these tools redefine the human developer's role**.
+
+| Tool | Human Role |
+|------|------------|
+| Ralph | **Planner** who writes the PRD |
+| Oh My OpenCode | **Architect** who designs team composition and methods |
+| Conductor | **Team Lead** who assigns work and **Reviewer** who approves changes |
+| Gas Town | **Director** who instructs the Mayor and monitors the system |
+| Claude Code | **System Designer** who crafts workflows and context |
+
+The progression is clear: **from Writer → Manager → Director → Overseer**.
+
+> "2026 is the year of 'Agentic Loops' and 'Industrialized Coding'."
 
 ---
 
@@ -159,3 +214,5 @@ The tools exist. The patterns are documented. What remains is the shift in how w
 - [Ralph-Wiggum on Awesome Claude](https://awesomeclaude.ai/ralph-wiggum)
 - [Mike.tech: Death of Software Development](https://mike.tech/blog/death-of-software-development)
 - [Simon Willison: Claude Skills](https://simonwillison.net/2025/Oct/16/claude-skills/)
+- [BMAD-METHOD GitHub](https://github.com/bmad-code-org/BMAD-METHOD)
+- [January 2026: Making Software Development Effortless](../translations/software-development-made-easy-jan-2026.md) - Comprehensive overview of AI orchestration tools and future patterns
