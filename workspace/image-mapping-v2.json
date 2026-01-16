@@ -1,0 +1,82 @@
+{
+  "_comment": "Image mapping v2 - uses content-aware positioning",
+  "_presets_v2": {
+    "right_of_content": "Places image to the RIGHT of actual text content (avoids overlap)",
+    "below_content": "Places image BELOW actual text content",
+    "right_half_safe": "Right half of slide, but avoids title area",
+    "center_below_title": "Centered on slide, but positioned below title",
+    "background": "Full slide background"
+  },
+  "slides": [
+    {
+      "slide_number": 5,
+      "description": "Blog: Death of Software Engineering - text on left, image on right",
+      "images": [
+        {
+          "path": "../figures/Slide005-blog-mike-tech-death-of-software.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 6,
+      "description": "Reddit: XML Structured Prompting - text on left, image on right",
+      "images": [
+        {
+          "path": "../figures/Slide006-reddit-xml-structured-prompting.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 7,
+      "description": "Workflow Improvement Loop - diagram on right (slide has text content)",
+      "images": [
+        {
+          "path": "../figures/Slide007-workflow-improvement-loop.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 15,
+      "description": "Status Tab Usage - screenshot on right of content",
+      "images": [
+        {
+          "path": "../figures/Slide015-status-tab-usage.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 21,
+      "description": "Tweet: Boris Cherny - image on right of content",
+      "images": [
+        {
+          "path": "../figures/Slide021-tweet-boris-cherny-parallel-claudes.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 27,
+      "description": "Status Tab Status - screenshot on right of content",
+      "images": [
+        {
+          "path": "../figures/Slide027-status-tab-status.png",
+          "preset": "right_of_content"
+        }
+      ]
+    },
+    {
+      "slide_number": 42,
+      "description": "Ralph Wiggum - on right side (slide has demo bullet points)",
+      "images": [
+        {
+          "path": "../figures/Slide042-ralph-wiggum-awesomeclaude.png",
+          "preset": "right_of_content"
+        }
+      ]
+    }
+  ]
+}

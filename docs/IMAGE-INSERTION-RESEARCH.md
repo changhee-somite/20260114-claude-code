@@ -296,3 +296,76 @@ The investigation was prompted by the user's observation that figures could not 
 - `fba3fae3-a6a8-4ba5-b08e-05f688ffab27` - Phase 2: Presentation narrative
 
 All sessions confirmed the limitation was architectural (text replacement workflow) rather than a bug or configuration issue.
+
+---
+
+## Lessons Learned (Post-Implementation)
+
+### Key Discovery: Placeholder Width ≠ Content Width
+
+**Problem observed**: The v1 script's `right_half` preset caused images to overlap with text.
+
+**Root cause analysis** revealed:
+
+```
+SLIDE LAYOUT ANATOMY:
+┌──────────────────────────────────────────────────────────────────┐
+│ Title Placeholder: L=0.42" → R=11.91" (full width)               │
+├──────────────────────────────────────────────────────────────────┤
+│ Text Placeholder:  L=0.42" → R=11.91" (full width container)     │
+│ ┌─────────────────────────┐                                      │
+│ │ Actual text content     │← Text ends at ~6"                    │
+│ │ only fills part of the  │                                      │
+│ │ placeholder box         │         Empty space →                │
+│ └─────────────────────────┘                                      │
+└──────────────────────────────────────────────────────────────────┘
+                                    ↑
+                            Image placed here at 6.67"
+                            overlaps with PLACEHOLDER
+                            but NOT with visible text
+```
+
+**Insight**: PowerPoint placeholders are designed as full-width containers, even when content doesn't fill them. The script must distinguish between:
+- **Placeholder bounds** (shape dimensions)
+- **Content bounds** (actual text extent)
+
+### Implementation Evolution: v1 → v2
+
+| Version | Approach | Issue |
+|---------|----------|-------|
+| **v1** | Fixed presets based on slide dimensions | `right_half` = slide_width/2 = 6.67" overlaps text placeholder |
+| **v2** | Content-aware positioning | Analyzes actual content, places images in available space |
+
+### Preset Recommendations
+
+| Preset | Use When | Avoid When |
+|--------|----------|------------|
+| `right_of_content` | Slide has bullet points on left | Text spans full width |
+| `below_content` | Slide has minimal text at top | Text fills slide height |
+| `center_below_title` | Slide has ONLY title, no body text | Slide has body content |
+| `right_half_safe` | Need guaranteed right-side placement | Need precise positioning |
+
+### Warning System
+
+The v2 script includes overlap warnings:
+```
+⚠️  Slide 5: Image may overlap with text content.
+    Image: L=7.3" R=12.7" | Text: L=0.4" R=13.3"
+```
+
+**Interpretation**: Warning compares image bounds vs **placeholder** bounds. If image starts at 7.3" and visible text ends at ~6", there's actually ~1.3" gap despite the warning.
+
+### Best Practices Identified
+
+1. **Always analyze slides first**: Use `analyze_slides.py` before creating mappings
+2. **Estimate actual text width**: ~0.075" per character at typical font sizes
+3. **Use `right_of_content` for text-heavy slides**: Safer than `center` presets
+4. **Reserve `center_below_title` for title-only slides**: Like section dividers
+5. **Accept placeholder overlap warnings**: They're conservative; actual text may be shorter
+
+### Future Improvements
+
+1. **Text width estimation**: Parse font sizes and character counts for precise bounds
+2. **Auto-resize placeholders**: `--resize-text` flag to shrink placeholders
+3. **Layer ordering**: Option to send images to back (behind text)
+4. **Visual validation**: Generate thumbnail previews before saving
