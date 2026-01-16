@@ -1,0 +1,82 @@
+{
+  "_comment": "Image mapping for Claude Code presentation. Slide numbers are 1-indexed.",
+  "_presets": {
+    "right_half": "Image fills right half of slide (for text-left/image-right layouts)",
+    "left_half": "Image fills left half of slide",
+    "bottom_half": "Image fills bottom half of slide",
+    "center": "Image centered, max 80% of slide",
+    "full": "Image fills entire slide"
+  },
+  "slides": [
+    {
+      "slide_number": 5,
+      "description": "Blog: Death of Software Engineering",
+      "images": [
+        {
+          "path": "../figures/Slide005-blog-mike-tech-death-of-software.png",
+          "preset": "right_half"
+        }
+      ]
+    },
+    {
+      "slide_number": 6,
+      "description": "Reddit: XML Structured Prompting",
+      "images": [
+        {
+          "path": "../figures/Slide006-reddit-xml-structured-prompting.png",
+          "preset": "right_half"
+        }
+      ]
+    },
+    {
+      "slide_number": 7,
+      "description": "Workflow Improvement Loop Diagram",
+      "images": [
+        {
+          "path": "../figures/Slide007-workflow-improvement-loop.png",
+          "preset": "center"
+        }
+      ]
+    },
+    {
+      "slide_number": 15,
+      "description": "Status Tab Usage Screenshot",
+      "images": [
+        {
+          "path": "../figures/Slide015-status-tab-usage.png",
+          "preset": "right_half"
+        }
+      ]
+    },
+    {
+      "slide_number": 21,
+      "description": "Tweet: Boris Cherny on Parallel Claudes",
+      "images": [
+        {
+          "path": "../figures/Slide021-tweet-boris-cherny-parallel-claudes.png",
+          "preset": "right_half"
+        }
+      ]
+    },
+    {
+      "slide_number": 27,
+      "description": "Status Tab Status Screenshot",
+      "images": [
+        {
+          "path": "../figures/Slide027-status-tab-status.png",
+          "preset": "right_half"
+        }
+      ]
+    },
+    {
+      "slide_number": 42,
+      "description": "Ralph Wiggum - Awesome Claude Skills",
+      "images": [
+        {
+          "path": "../figures/Slide042-ralph-wiggum-awesomeclaude.png",
+          "preset": "center"
+        }
+      ]
+    }
+  ]
+}
