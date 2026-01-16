@@ -1,7 +1,8 @@
 {
   "_comment": "Image mapping v2 - uses content-aware positioning",
   "_presets_v2": {
-    "right_of_content": "Places image to the RIGHT of actual text content (avoids overlap)",
+    "right_of_content": "Places image to the RIGHT of content, vertically CENTERED",
+    "right_of_content_top": "Places image to the RIGHT of content, TOP-ALIGNED (recommended)",
     "below_content": "Places image BELOW actual text content",
     "right_half_safe": "Right half of slide, but avoids title area",
     "center_below_title": "Centered on slide, but positioned below title",
@@ -14,7 +15,7 @@
       "images": [
         {
           "path": "../figures/Slide005-blog-mike-tech-death-of-software.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -24,7 +25,7 @@
       "images": [
         {
           "path": "../figures/Slide006-reddit-xml-structured-prompting.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -34,7 +35,7 @@
       "images": [
         {
           "path": "../figures/Slide007-workflow-improvement-loop.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -44,7 +45,7 @@
       "images": [
         {
           "path": "../figures/Slide015-status-tab-usage.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -54,7 +55,7 @@
       "images": [
         {
           "path": "../figures/Slide021-tweet-boris-cherny-parallel-claudes.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -64,7 +65,7 @@
       "images": [
         {
           "path": "../figures/Slide027-status-tab-status.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     },
@@ -74,7 +75,7 @@
       "images": [
         {
           "path": "../figures/Slide042-ralph-wiggum-awesomeclaude.png",
-          "preset": "right_of_content"
+          "preset": "right_of_content_top"
         }
       ]
     }

@@ -203,6 +203,40 @@ def calculate_smart_position(
 
         return left, top, width, height
 
+    elif preset == "right_of_content_top":
+        # Place image to the right of content, TOP-ALIGNED (not centered)
+        if content_bounds and content_bounds.right < slide_width * 0.7:
+            available_left = content_bounds.right + margin
+            available_width = slide_width - available_left - margin
+
+            # Top aligned with content (or below title)
+            if title_bounds:
+                available_top = title_bounds.bottom + margin
+            elif content_bounds:
+                available_top = content_bounds.top
+            else:
+                available_top = margin
+            available_height = slide_height - available_top - margin
+        else:
+            available_left = slide_width * 0.55
+            available_width = slide_width * 0.4
+            available_top = 1.5 if title_bounds else margin
+            available_height = slide_height - available_top - margin
+
+        # Calculate size maintaining aspect ratio
+        if img_ratio > available_width / available_height:
+            width = available_width
+            height = width / img_ratio
+        else:
+            height = available_height
+            width = height * img_ratio
+
+        # TOP-ALIGNED: center horizontally, align to top
+        left = available_left + (available_width - width) / 2
+        top = available_top  # <-- Top aligned, not centered
+
+        return left, top, width, height
+
     elif preset == "below_content":
         # Place image below actual content
         if content_bounds:
