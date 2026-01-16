@@ -1,3 +1,16 @@
+# Available Project Skills
+
+This project includes custom skills for presentation development:
+
+| Skill | Purpose | Usage |
+|-------|---------|-------|
+| `pptx-images` | Insert images into slides | `python scripts/add_images_only.py input.pptx output.pptx --mapping image-mapping.json` |
+| `pptx-inspector` | Validate presentations | `python scripts/pptx_inspector.py presentation.pptx --level 2` |
+| `conversation-search` | Search past sessions | `python skills/conversation-search/search.py "keyword"` |
+
+See `skills/README.md` for full documentation.
+
+
 # Objectives & Background
 
 I want to prepare a 30 minute to 1 hour presentation to an internal computational team.

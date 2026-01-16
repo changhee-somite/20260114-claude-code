@@ -2,82 +2,135 @@
 
 This directory contains custom skills developed during this presentation project.
 
+## Available Skills
+
+| Skill | Description | Script |
+|-------|-------------|--------|
+| `pptx-images` | Insert images into presentations | `scripts/add_images_only.py` |
+| `pptx-inspector` | Validate presentations for issues | `scripts/pptx_inspector.py` |
+| `conversation-search` | Search past Claude Code conversations | `skills/conversation-search/search.py` |
+
+---
+
+## pptx-images
+
+Insert images into PowerPoint presentations while preserving text content.
+
+**When to use:**
+- Adding figures, screenshots, or diagrams to slides
+- After text replacement is complete (two-stage workflow)
+
+**Usage:**
+```bash
+python scripts/add_images_only.py \
+    input.pptx output.pptx \
+    --mapping image-mapping.json
+```
+
+**Features:**
+- Resizes text placeholders to make room for images
+- Inserts images at specified positions
+- Preserves all text content unchanged
+- Includes validation for common issues
+- Correctly handles the python-pptx position offset bug
+
+See `skills/pptx-images/SKILL.md` for full documentation.
+
+---
+
+## pptx-inspector
+
+Validate PowerPoint presentations for layout issues and broken XML.
+
+**When to use:**
+- Before visual review of generated presentations
+- When troubleshooting visual glitches
+- In CI/CD pipelines for automated validation
+
+**Usage:**
+```bash
+python scripts/pptx_inspector.py presentation.pptx --level 2
+```
+
+**Validation levels:**
+1. Quick object inspection (dimensions, positions)
+2. XML structure inspection (catches position offset bug)
+3. Content validation (placeholder text, overflow)
+4. Layout overlap detection
+
+See `skills/pptx-inspector/SKILL.md` for full documentation.
+
+---
+
 ## conversation-search
 
-A skill for searching past Claude Code conversation history.
+Search past Claude Code conversation history by keyword, project, or date.
 
-### Installation
+**When to use:**
+- Finding previous sessions about a topic
+- Recalling past decisions or context
+- Resuming a previous conversation
 
-```bash
-# Copy to your skills directory
-cp -r skills/conversation-search ~/.claude/skills/
-```
-
-### Usage
-
-The skill can be used in two ways:
-
-#### 1. Natural Language (via Claude)
-
-Just ask Claude naturally:
-- "Search my conversations for 'pptx image insertion'"
-- "What sessions did I have about authentication?"
-- "Find where we discussed the workflow"
-
-Claude will use the skill's SKILL.md documentation to search.
-
-#### 2. Direct Script Usage
-
+**Usage:**
 ```bash
 # List all sessions
-python ~/.claude/skills/conversation-search/search.py --list
+python skills/conversation-search/search.py --list
 
 # Search for keyword
-python ~/.claude/skills/conversation-search/search.py "image insertion"
-
-# Search with sessions-only mode
-python ~/.claude/skills/conversation-search/search.py "pptx" --sessions-only
-
-# Filter by project
-python ~/.claude/skills/conversation-search/search.py --list --project ~/myproject
+python skills/conversation-search/search.py "image insertion"
 
 # View session content
-python ~/.claude/skills/conversation-search/search.py --session <session-id>
+python skills/conversation-search/search.py --session <session-id>
 ```
 
-### Why This Skill?
+See `skills/conversation-search/SKILL.md` for full documentation.
 
-During this presentation project, we needed to investigate why the PPTX skill couldn't insert images. This required searching through past conversation history stored in `~/.claude/projects/`.
+---
 
-Key learnings:
-1. Conversations are stored as JSONL files
-2. Each project has a `sessions-index.json` with metadata
-3. Session IDs can be used with `claude --resume <id>` to continue
+## Two-Stage PPTX Workflow
 
-### File Structure
+These skills support a two-stage workflow for creating presentations:
 
 ```
-conversation-search/
-├── SKILL.md     # Skill definition and documentation
-└── search.py    # Python search script
+┌─────────────────────────────────────────────────────────┐
+│  Stage 1: Text Replacement (standard PPTX skill)        │
+│                                                         │
+│  template.pptx → rearrange.py → working.pptx            │
+│  working.pptx + replacement.json → replace.py → text.pptx│
+└─────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────┐
+│  Stage 2: Image Insertion (pptx-images skill)           │
+│                                                         │
+│  text.pptx + image-mapping.json → add_images_only.py    │
+│      → final.pptx                                       │
+└─────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────┐
+│  Validation (pptx-inspector skill)                      │
+│                                                         │
+│  final.pptx → pptx_inspector.py → issues report         │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### Conversation Storage Structure
+---
 
+## Installation
+
+These skills are project-local. To install globally:
+
+```bash
+# Copy all skills to Claude Code skills directory
+cp -r skills/* ~/.claude/skills/
 ```
-~/.claude/
-├── projects/
-│   └── -Users-name-path-to-project/       # Path-encoded
-│       ├── sessions-index.json            # Session index
-│       └── <session-id>.jsonl             # Session content
-├── history.jsonl                          # Global index
-└── settings.json
-```
+
+---
 
 ## Contributing
 
 To add a new skill:
+
 1. Create a directory under `skills/`
-2. Add a `SKILL.md` with the skill definition
+2. Add a `SKILL.md` with frontmatter (name, description) and documentation
 3. Add any supporting scripts
 4. Update this README
