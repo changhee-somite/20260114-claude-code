@@ -29,7 +29,11 @@ This repository contains materials for a 45-60 minute presentation introducing C
 │       └── ...
 ├── figures/                 # Screenshots and diagrams for slides
 ├── scratch/                 # Raw notes and initial research
-├── workspace/               # PPTX generation scripts and templates
+├── scripts/                 # PPTX generation and validation tools
+│   ├── add_images_only.py   # Image insertion with position offset fix
+│   ├── pptx_inspector.py    # Validate PPTX for layout issues
+│   └── README.md            # Script documentation
+├── workspace/               # Working files and image mappings
 ├── CLAUDE.md                # Project instructions for Claude Code
 └── *.pptx                   # Generated presentation files
 ```
@@ -62,6 +66,49 @@ docs/PRESENTATION.md (slide outline)
 
 The git commit history documents each step of the human-agent collaboration.
 
+## PPTX Generation with Images
+
+A key development in this project was creating a robust workflow for generating PowerPoint presentations with integrated images. This involved discovering and fixing a **critical python-pptx bug**.
+
+### The Position Offset Bug
+
+When modifying placeholder dimensions in python-pptx, setting only `shape.width` creates incomplete XML:
+
+```xml
+<!-- ❌ BROKEN - Missing position -->
+<a:xfrm>
+  <a:ext cx="5943600" cy="4648200"/>
+</a:xfrm>
+
+<!-- ✅ CORRECT - Has both position and size -->
+<a:xfrm>
+  <a:off x="387391" y="1510234"/>
+  <a:ext cx="5943600" cy="4648200"/>
+</a:xfrm>
+```
+
+**Solution**: Set all four properties together (left, top, width, height) to generate complete XML.
+
+### Two-Stage Workflow
+
+```
+Stage 1: Text Replacement (PPTX skill)
+template.pptx → rearrange.py → replace.py → text-done.pptx
+
+Stage 2: Image Insertion (add_images_only.py)
+text-done.pptx + image-mapping.json → add_images_only.py → final.pptx
+```
+
+### Validation
+
+Use the PPTX inspector to catch layout issues before visual review:
+
+```bash
+python scripts/pptx_inspector.py presentation.pptx --level 2
+```
+
+See [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md) for detailed validation techniques.
+
 ## Quick Start
 
 To explore this repository with Claude Code:
@@ -82,6 +129,9 @@ claude
 | [docs/PRESENTATION.md](docs/PRESENTATION.md) | Complete slide-by-slide outline |
 | [docs/topics/07-cursor-vs-claude-code.md](docs/topics/07-cursor-vs-claude-code.md) | Cursor vs Claude Code comparison |
 | [docs/topics/02-context-engineering.md](docs/topics/02-context-engineering.md) | Context window management strategies |
+| [docs/PPTX-IMAGE-SKILL-SPEC.md](docs/PPTX-IMAGE-SKILL-SPEC.md) | PPTX with images workflow specification |
+| [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md) | PPTX validation techniques and patterns |
+| [scripts/add_images_only.py](scripts/add_images_only.py) | Image insertion script with bug fix |
 | [CLAUDE.md](CLAUDE.md) | Project instructions demonstrating the pattern |
 
 ## Resources
