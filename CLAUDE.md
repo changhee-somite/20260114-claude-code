@@ -55,6 +55,17 @@ keywords regarding this matter.
 
 
 
+# Documentation Principles
+
+* **README.md** should be a general overview with links to detailed documentation
+* **Details belong in dedicated docs/** — Relegate technical details, workflows, and specifications to separate markdown files
+* **Avoid verbose README** — Keep it scannable; readers can drill into linked documents for depth
+* **docs/ organization**:
+  - `docs/topics/` — Deep-dive topic documentation
+  - `docs/PRESENTATION.md` — Slide outline
+  - `docs/*.md` — Workflow specs, skill documentation, research notes
+
+
 # Workflow
 
 * Phase 1 : You first read the scratch/SCRATCH.md and do further research to compile and organize

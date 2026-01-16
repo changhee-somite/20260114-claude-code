@@ -68,46 +68,11 @@ The git commit history documents each step of the human-agent collaboration.
 
 ## PPTX Generation with Images
 
-A key development in this project was creating a robust workflow for generating PowerPoint presentations with integrated images. This involved discovering and fixing a **critical python-pptx bug**.
+This project includes a two-stage workflow for generating PowerPoint presentations with integrated images, along with validation tools to catch layout issues.
 
-### The Position Offset Bug
-
-When modifying placeholder dimensions in python-pptx, setting only `shape.width` creates incomplete XML:
-
-```xml
-<!-- ❌ BROKEN - Missing position -->
-<a:xfrm>
-  <a:ext cx="5943600" cy="4648200"/>
-</a:xfrm>
-
-<!-- ✅ CORRECT - Has both position and size -->
-<a:xfrm>
-  <a:off x="387391" y="1510234"/>
-  <a:ext cx="5943600" cy="4648200"/>
-</a:xfrm>
-```
-
-**Solution**: Set all four properties together (left, top, width, height) to generate complete XML.
-
-### Two-Stage Workflow
-
-```
-Stage 1: Text Replacement (PPTX skill)
-template.pptx → rearrange.py → replace.py → text-done.pptx
-
-Stage 2: Image Insertion (add_images_only.py)
-text-done.pptx + image-mapping.json → add_images_only.py → final.pptx
-```
-
-### Validation
-
-Use the PPTX inspector to catch layout issues before visual review:
-
-```bash
-python scripts/pptx_inspector.py presentation.pptx --level 2
-```
-
-See [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md) for detailed validation techniques.
+- **Workflow**: [docs/PPTX-IMAGE-SKILL-SPEC.md](docs/PPTX-IMAGE-SKILL-SPEC.md)
+- **Validation**: [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md)
+- **Research & Lessons Learned**: [docs/IMAGE-INSERTION-RESEARCH.md](docs/IMAGE-INSERTION-RESEARCH.md)
 
 ## Quick Start
 
