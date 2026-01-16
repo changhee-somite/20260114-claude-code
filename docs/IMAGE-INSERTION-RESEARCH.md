@@ -369,3 +369,76 @@ The v2 script includes overlap warnings:
 2. **Auto-resize placeholders**: `--resize-text` flag to shrink placeholders
 3. **Layer ordering**: Option to send images to back (behind text)
 4. **Visual validation**: Generate thumbnail previews before saving
+
+---
+
+## Final Solution: The Position Offset Bug (2026-01-16)
+
+### The Critical Discovery
+
+After extensive debugging with visual validation from the user, a fundamental python-pptx behavior was discovered:
+
+**When you set `shape.width` on a placeholder, python-pptx creates an `<a:xfrm>` element with only `<a:ext>` (size) but NOT `<a:off>` (position offset).**
+
+This breaks PowerPoint's layout inheritance, causing shapes to render in wrong positions.
+
+### XML Evidence
+
+```xml
+<!-- ❌ BROKEN - After setting only width -->
+<p:spPr>
+  <a:xfrm>
+    <a:ext cx="5943600" cy="4648200"/>
+  </a:xfrm>
+</p:spPr>
+
+<!-- ✅ CORRECT - After setting all properties -->
+<p:spPr>
+  <a:xfrm>
+    <a:off x="387391" y="1510234"/>
+    <a:ext cx="5943600" cy="4648200"/>
+  </a:xfrm>
+</p:spPr>
+```
+
+### The Fix
+
+```python
+def resize_placeholder_width(shape, new_width_inches):
+    """Must set ALL FOUR properties to generate complete XML."""
+    original_left = shape.left
+    original_top = shape.top
+    original_height = shape.height
+
+    shape.left = original_left      # Forces <a:off> x
+    shape.top = original_top        # Forces <a:off> y
+    shape.width = Inches(new_width_inches)  # Forces <a:ext> cx
+    shape.height = original_height  # Forces <a:ext> cy
+
+    return shape
+```
+
+### Validation Script
+
+The final `add_images_only.py` script includes validation that checks:
+1. Placeholder dimensions (height > 0.5", width > 2.0")
+2. Image presence on expected slides
+3. XML structure (all `<a:xfrm>` have both `<a:off>` and `<a:ext>`)
+
+### Working Workflow
+
+```
+workspace/output-text-replaced.pptx  (text already correct)
+           ↓
+scripts/add_images_only.py + image-mapping-v2.json
+           ↓
+final-presentation.pptx  (text + images, validated)
+```
+
+### Key Lesson
+
+**Always verify output programmatically AND visually.** The python-pptx object model may report correct values (shape.left, shape.top) even when the underlying XML is incomplete. Only by:
+1. Examining raw XML
+2. Having visual confirmation from PowerPoint
+
+...can you confirm the output is actually correct.
