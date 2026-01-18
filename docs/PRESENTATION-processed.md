@@ -138,12 +138,38 @@ Session 100: Agent works like a trained team member
 
 **Notes**: This is the architecture for rapid efficiency gains. The future is here—adoption is the challenge.
 
-**Diagram Description**:
-A circular improvement loop with four stages: (1) Update CLAUDE.md with project context,
-(2) Agent behavior improves from better instructions, (3) Refine skills based on experience,
-(4) Knowledge compounds over sessions—then the cycle repeats. Use rounded boxes with
-light blue fill and arrows connecting each stage in a clockwise cycle.
+**Diagram**:
+```diagram
+type: cycle
+position: right
+width: 5.0
 
+nodes:
+  - id: node1
+    text: Update CLAUDE.md with project context
+  - id: node2
+    text: Agent behavior improves from better instructions
+  - id: node3
+    text: Refine skills based on experience
+  - id: node4
+    text: Knowledge compounds over sessions—
+
+edges:
+  - from: node1
+    to: node2
+  - from: node2
+    to: node3
+  - from: node3
+    to: node4
+  - from: node4
+    to: node1
+
+style:
+  shape: rounded_rectangle
+  fill: "#E8F4F8"
+  line: "#2D5F73"
+  text_color: "#1A3A47"
+```
 **Source**: [topics/06-workflow-paradigm.md](topics/06-workflow-paradigm.md)
 
 ---

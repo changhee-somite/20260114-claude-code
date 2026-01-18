@@ -3,13 +3,14 @@
 Unified Presentation Generator
 
 Generates PowerPoint presentations from PRESENTATION.md with integrated
-text and image handling.
+text, image, and diagram handling.
 
 Features:
 - Parses PRESENTATION.md to extract slide content
-- Detects slides with figures vs text-only
-- Assigns appropriate layouts (split for images, full-width for text)
+- Detects slides with figures, diagrams, or text-only
+- Assigns appropriate layouts (split for images/diagrams, full-width for text)
 - Inserts images with proper positioning
+- Renders vector diagrams using python-pptx shapes
 - Resizes text placeholders to avoid overlap
 
 Usage:
@@ -20,7 +21,7 @@ Usage:
         --output final.pptx
 
 Author: Claude Code
-Date: 2026-01-16
+Date: 2026-01-17
 """
 
 import argparse
@@ -38,6 +39,9 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER
 from pptx.dml.color import RGBColor
 from PIL import Image
 
+# Import diagram renderer
+from diagram_renderer import render_diagram, parse_diagram_block, DiagramConfig
+
 
 @dataclass
 class SlideContent:
@@ -46,8 +50,9 @@ class SlideContent:
     title: str = ""
     content: List[str] = field(default_factory=list)
     figure_path: Optional[str] = None
+    diagram_spec: Optional[Dict] = None  # Parsed diagram specification
     notes: Optional[str] = None
-    slide_type: str = "text_only"  # text_only, text_image, section, title
+    slide_type: str = "text_only"  # text_only, text_image, text_diagram, section, title
 
 
 @dataclass
@@ -132,6 +137,17 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
             slide.figure_path = figure_match.group(1)
             slide.slide_type = 'text_image'
 
+        # Extract diagram specification
+        diagram_match = re.search(
+            r'\*\*Diagram\*\*:\s*\n```diagram\n(.+?)```',
+            slide_content,
+            re.DOTALL
+        )
+        if diagram_match:
+            diagram_block = diagram_match.group(1)
+            slide.diagram_spec = parse_diagram_block(diagram_block)
+            slide.slide_type = 'text_diagram'
+
         # Extract notes
         notes_match = re.search(r'\*\*Notes\*\*:\s*(.+?)(?:\n\*\*|\Z)', slide_content, re.DOTALL)
         if notes_match:
@@ -140,7 +156,7 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
         # Determine slide type
         if slide.number == 1:
             slide.slide_type = 'title'
-        elif slide.slide_type != 'text_image' and slide.slide_type != 'section':
+        elif slide.slide_type not in ('text_image', 'text_diagram', 'section'):
             slide.slide_type = 'text_only'
 
         slides.append(slide)
@@ -292,6 +308,7 @@ def generate_presentation(
         print("Processing only matching slides...")
 
     image_count = 0
+    diagram_count = 0
 
     for i, slide_content in enumerate(slides_data):
         if i >= len(prs.slides):
@@ -351,6 +368,28 @@ def generate_presentation(
             else:
                 print(f"Slide {i+1}: Image not found: {fig_path}")
 
+        elif slide_content.slide_type == 'text_diagram' and slide_content.diagram_spec:
+            # Fill content with resized width (same as images)
+            fill_body(slide, slide_content.content, resize_width=layout_config.text_width)
+
+            # Configure diagram position
+            diagram_config = DiagramConfig(
+                left=layout_config.image_left,
+                top=layout_config.image_top,
+                width=layout_config.image_width,
+                height=slide_height - layout_config.image_top - 0.5
+            )
+
+            # Render the diagram
+            shapes = render_diagram(slide, slide_content.diagram_spec, diagram_config)
+
+            if shapes:
+                diagram_count += 1
+                diagram_type = slide_content.diagram_spec.get('type', 'unknown')
+                node_count = len(slide_content.diagram_spec.get('nodes', []))
+                print(f"Slide {i+1}: {slide_content.title[:40]}...")
+                print(f"  Diagram: {diagram_type} with {node_count} nodes, {len(shapes)} shapes")
+
         elif slide_content.slide_type in ('text_only', 'section'):
             # Full-width text
             fill_body(slide, slide_content.content)
@@ -363,7 +402,7 @@ def generate_presentation(
     prs.save(str(output_path))
 
     print()
-    print(f"Generated {len(slides_data)} slides with {image_count} images")
+    print(f"Generated {len(slides_data)} slides with {image_count} images and {diagram_count} diagrams")
     print(f"Saved to: {output_path}")
 
 
@@ -442,6 +481,14 @@ def main():
     print(f"Slides with figures: {len(image_slides)}")
     for s in image_slides:
         print(f"  Slide {s.number}: {s.figure_path}")
+
+    # Count slides with diagrams
+    diagram_slides = [s for s in slides_data if s.diagram_spec]
+    print(f"Slides with diagrams: {len(diagram_slides)}")
+    for s in diagram_slides:
+        dtype = s.diagram_spec.get('type', 'unknown')
+        nodes = len(s.diagram_spec.get('nodes', []))
+        print(f"  Slide {s.number}: {dtype} diagram ({nodes} nodes)")
     print()
 
     # Configure layouts
