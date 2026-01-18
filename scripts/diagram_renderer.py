@@ -5,6 +5,11 @@ Diagram Renderer: Create vector graphics diagrams in PowerPoint.
 This module renders structured diagram specifications as PowerPoint shapes
 using python-pptx. It supports cycle, flow, comparison, and hierarchy diagrams.
 
+Features:
+- Vector shapes with customizable styling
+- Arrow connectors with directional arrowheads
+- Automatic grouping of diagram elements
+
 Usage:
     from diagram_renderer import render_diagram
 
@@ -22,6 +27,7 @@ from pptx.util import Inches, Pt, Emu
 from pptx.enum.shapes import MSO_SHAPE, MSO_CONNECTOR
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.oxml.ns import qn  # For XML namespace handling
 
 
 @dataclass
@@ -102,7 +108,7 @@ def create_styled_shape(slide, shape_type, left, top, width, height, text, style
 
 
 def add_arrow_connector(slide, start_shape, end_shape, style):
-    """Add an arrow connector between two shapes.
+    """Add an arrow connector between two shapes with arrowhead.
 
     Note: All coordinates must be integers (EMUs) for valid PPTX XML.
     """
@@ -153,6 +159,19 @@ def add_arrow_connector(slide, start_shape, end_shape, style):
     if "line" in style:
         connector.line.color.rgb = hex_to_rgb(style["line"])
     connector.line.width = Pt(2)
+
+    # Add arrowhead at the end (tail) of the connector
+    # Access the underlying XML element to add tailEnd
+    spPr = connector._element.spPr
+    ln = spPr.get_or_add_ln()
+
+    # Create tailEnd element with arrow type
+    from lxml import etree
+    nsmap = {'a': 'http://schemas.openxmlformats.org/drawingml/2006/main'}
+    tailEnd = etree.SubElement(ln, qn('a:tailEnd'))
+    tailEnd.set('type', 'triangle')  # triangle is the standard arrow
+    tailEnd.set('w', 'med')  # medium width
+    tailEnd.set('len', 'med')  # medium length
 
     return connector
 
@@ -355,7 +374,7 @@ def render_comparison_diagram(slide, spec: dict, config: DiagramConfig) -> List:
     return shapes_created
 
 
-def render_diagram(slide, spec: dict, config: DiagramConfig = None) -> List:
+def render_diagram(slide, spec: dict, config: DiagramConfig = None, group: bool = True) -> List:
     """
     Render a diagram on a slide based on the specification.
 
@@ -363,9 +382,10 @@ def render_diagram(slide, spec: dict, config: DiagramConfig = None) -> List:
         slide: PowerPoint slide object
         spec: Diagram specification dict with type, nodes, edges, style
         config: DiagramConfig for positioning
+        group: If True, group all diagram shapes together (default: True)
 
     Returns:
-        List of created shapes
+        List of created shapes (or single GroupShape if group=True)
     """
     if config is None:
         config = DiagramConfig()
@@ -390,16 +410,28 @@ def render_diagram(slide, spec: dict, config: DiagramConfig = None) -> List:
 
     # Dispatch to appropriate renderer
     if diagram_type == "cycle":
-        return render_cycle_diagram(slide, spec, config)
+        shapes = render_cycle_diagram(slide, spec, config)
     elif diagram_type == "flow":
-        return render_flow_diagram(slide, spec, config, vertical=False)
+        shapes = render_flow_diagram(slide, spec, config, vertical=False)
     elif diagram_type == "flow_vertical":
-        return render_flow_diagram(slide, spec, config, vertical=True)
+        shapes = render_flow_diagram(slide, spec, config, vertical=True)
     elif diagram_type == "comparison":
-        return render_comparison_diagram(slide, spec, config)
+        shapes = render_comparison_diagram(slide, spec, config)
     else:
         print(f"  Warning: Unknown diagram type '{diagram_type}', using flow")
-        return render_flow_diagram(slide, spec, config)
+        shapes = render_flow_diagram(slide, spec, config)
+
+    # Group all shapes together if requested
+    if group and shapes:
+        try:
+            group_shape = slide.shapes.add_group_shape(shapes)
+            return [group_shape]
+        except Exception as e:
+            # Grouping failed, return individual shapes
+            print(f"  Warning: Could not group shapes: {e}")
+            return shapes
+
+    return shapes
 
 
 def parse_diagram_block(block: str) -> dict:
