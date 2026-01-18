@@ -102,12 +102,15 @@ def create_styled_shape(slide, shape_type, left, top, width, height, text, style
 
 
 def add_arrow_connector(slide, start_shape, end_shape, style):
-    """Add an arrow connector between two shapes."""
-    # Get shape centers and edges
-    start_cx = start_shape.left + start_shape.width / 2
-    start_cy = start_shape.top + start_shape.height / 2
-    end_cx = end_shape.left + end_shape.width / 2
-    end_cy = end_shape.top + end_shape.height / 2
+    """Add an arrow connector between two shapes.
+
+    Note: All coordinates must be integers (EMUs) for valid PPTX XML.
+    """
+    # Get shape centers and edges - convert to int to avoid float EMU values
+    start_cx = int(start_shape.left) + int(start_shape.width) // 2
+    start_cy = int(start_shape.top) + int(start_shape.height) // 2
+    end_cx = int(end_shape.left) + int(end_shape.width) // 2
+    end_cy = int(end_shape.top) + int(end_shape.height) // 2
 
     # Calculate direction
     dx = end_cx - start_cx
@@ -117,33 +120,33 @@ def add_arrow_connector(slide, start_shape, end_shape, style):
     if abs(dx) > abs(dy):
         # Horizontal connection
         if dx > 0:
-            start_x = start_shape.left + start_shape.width
+            start_x = int(start_shape.left) + int(start_shape.width)
             start_y = start_cy
-            end_x = end_shape.left
+            end_x = int(end_shape.left)
             end_y = end_cy
         else:
-            start_x = start_shape.left
+            start_x = int(start_shape.left)
             start_y = start_cy
-            end_x = end_shape.left + end_shape.width
+            end_x = int(end_shape.left) + int(end_shape.width)
             end_y = end_cy
     else:
         # Vertical connection
         if dy > 0:
             start_x = start_cx
-            start_y = start_shape.top + start_shape.height
+            start_y = int(start_shape.top) + int(start_shape.height)
             end_x = end_cx
-            end_y = end_shape.top
+            end_y = int(end_shape.top)
         else:
             start_x = start_cx
-            start_y = start_shape.top
+            start_y = int(start_shape.top)
             end_x = end_cx
-            end_y = end_shape.top + end_shape.height
+            end_y = int(end_shape.top) + int(end_shape.height)
 
-    # Add connector
+    # Add connector using Emu wrapper to ensure proper integer values
     connector = slide.shapes.add_connector(
         MSO_CONNECTOR.STRAIGHT,
-        start_x, start_y,
-        end_x, end_y
+        Emu(start_x), Emu(start_y),
+        Emu(end_x), Emu(end_y)
     )
 
     # Style the connector

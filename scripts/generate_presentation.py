@@ -208,19 +208,27 @@ def fill_body(slide, content: List[str], resize_width: float = None):
     if not body_shape:
         return
 
-    # IMPORTANT: Save original height before any modifications
+    # IMPORTANT: Save ALL original position/size before any modifications
+    # Setting only some properties creates incomplete XML (python-pptx bug)
+    original_left = body_shape.left
+    original_top = body_shape.top
+    original_width = body_shape.width
     original_height = body_shape.height
 
-    # Resize width if needed (preserve height!)
+    # Resize width if needed - must set ALL FOUR properties together
     if resize_width:
+        body_shape.left = original_left
+        body_shape.top = original_top
         body_shape.width = Inches(resize_width)
-        # Restore height after width change
         body_shape.height = original_height
 
     tf = body_shape.text_frame
     tf.clear()
 
-    # Restore height again after clear (clear can reset auto-fit)
+    # Restore all properties after clear (clear can reset auto-fit)
+    body_shape.left = original_left
+    body_shape.top = original_top
+    body_shape.width = Inches(resize_width) if resize_width else original_width
     body_shape.height = original_height
 
     for i, item in enumerate(content):

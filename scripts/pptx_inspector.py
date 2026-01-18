@@ -47,8 +47,14 @@ def inspect_level1(pptx_path):
         for shape in slide.shapes:
             shape_name = shape.name
 
-            # Check 1: Zero dimensions
-            if shape.width == 0:
+            # Check if shape is a connector (straight connectors validly have one dimension as 0)
+            is_connector = (
+                hasattr(shape, 'shape_type') and
+                shape.shape_type == MSO_SHAPE_TYPE.LINE
+            ) or 'connector' in shape_name.lower()
+
+            # Check 1: Zero dimensions (skip for connectors - they can have one zero dimension)
+            if shape.width == 0 and not is_connector:
                 issues.append({
                     'slide': slide_num,
                     'shape': shape_name,
@@ -57,7 +63,7 @@ def inspect_level1(pptx_path):
                     'description': f'{shape_name} has width=0'
                 })
 
-            if shape.height == 0:
+            if shape.height == 0 and not is_connector:
                 issues.append({
                     'slide': slide_num,
                     'shape': shape_name,
