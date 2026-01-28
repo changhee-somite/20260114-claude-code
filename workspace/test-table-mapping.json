@@ -1,0 +1,80 @@
+{
+  "slides": [
+    {
+      "slide_number": 4,
+      "description": "Old vs New Model comparison (Slide 4 in presentation)",
+      "tables": [
+        {
+          "headers": ["Old Model", "New Model"],
+          "rows": [
+            ["Developer writes code line by line", "Developer describes outcomes"],
+            ["IDE assists with autocomplete", "Agent plans and executes"],
+            ["Human is the executor", "Human supervises and validates"]
+          ],
+          "position": {
+            "left": 7.0,
+            "top": 1.8,
+            "width": 5.8
+          },
+          "style": {
+            "header_fill": "#4472C4",
+            "header_text": "#FFFFFF",
+            "use_alt_rows": true
+          }
+        }
+      ]
+    },
+    {
+      "slide_number": 10,
+      "description": "Web Chatbot vs Claude Code comparison",
+      "tables": [
+        {
+          "headers": ["Web Chatbot", "Claude Code"],
+          "rows": [
+            ["Stateless conversations", "Persistent filesystem access"],
+            ["Copy-paste code snippets", "Direct file read/write"],
+            ["Describe your environment", "Agent explores your environment"],
+            ["Human executes commands", "Agent executes commands"],
+            ["No memory between sessions", "Project context via CLAUDE.md"]
+          ],
+          "position": {
+            "left": 7.0,
+            "top": 1.8,
+            "width": 5.8
+          },
+          "style": {
+            "header_fill": "#2E75B6",
+            "header_text": "#FFFFFF",
+            "use_alt_rows": true
+          }
+        }
+      ]
+    },
+    {
+      "slide_number": 34,
+      "description": "Cursor vs Claude Code comparison",
+      "tables": [
+        {
+          "headers": ["Aspect", "Cursor IDE", "Claude Code"],
+          "rows": [
+            ["Paradigm", "Enhanced IDE", "Autonomous Agent"],
+            ["Interface", "GUI (VS Code fork)", "CLI / Terminal"],
+            ["Model", "User-selectable", "Claude (optimized)"],
+            ["Execution", "User-initiated", "Autonomous"],
+            ["Context", "IDE-provided", "Full filesystem + shell"]
+          ],
+          "position": {
+            "left": 7.0,
+            "top": 1.8,
+            "width": 5.8
+          },
+          "style": {
+            "header_fill": "#CC6600",
+            "header_text": "#FFFFFF",
+            "use_alt_rows": true
+          }
+        }
+      ]
+    }
+  ]
+}

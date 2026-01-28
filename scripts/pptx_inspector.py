@@ -33,6 +33,101 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 
+def inspect_table(slide_num, shape_name, table):
+    """
+    Inspect a table for common issues.
+
+    Args:
+        slide_num: Slide number (1-indexed)
+        shape_name: Name of the table shape
+        table: python-pptx Table object
+
+    Returns:
+        List of issue dicts
+    """
+    issues = []
+
+    num_rows = len(table.rows)
+    num_cols = len(table.columns)
+
+    # Check 1: Empty table
+    if num_rows == 0:
+        issues.append({
+            'slide': slide_num,
+            'shape': shape_name,
+            'type': 'TABLE_NO_ROWS',
+            'severity': 'ERROR',
+            'description': f'Table "{shape_name}" has no rows'
+        })
+        return issues
+
+    if num_cols == 0:
+        issues.append({
+            'slide': slide_num,
+            'shape': shape_name,
+            'type': 'TABLE_NO_COLUMNS',
+            'severity': 'ERROR',
+            'description': f'Table "{shape_name}" has no columns'
+        })
+        return issues
+
+    # Check 2: Empty header cells
+    if num_rows > 0:
+        header_row = table.rows[0]
+        empty_headers = 0
+        for cell in header_row.cells:
+            if not cell.text.strip():
+                empty_headers += 1
+
+        if empty_headers > 0:
+            issues.append({
+                'slide': slide_num,
+                'shape': shape_name,
+                'type': 'TABLE_EMPTY_HEADERS',
+                'severity': 'WARNING',
+                'description': f'Table has {empty_headers} empty header cell(s)'
+            })
+
+    # Check 3: Rows with mismatched column count
+    for row_idx, row in enumerate(table.rows):
+        actual_cols = len(list(row.cells))
+        if actual_cols != num_cols:
+            issues.append({
+                'slide': slide_num,
+                'shape': shape_name,
+                'type': 'TABLE_COLUMN_MISMATCH',
+                'severity': 'WARNING',
+                'description': f'Row {row_idx + 1} has {actual_cols} cells, expected {num_cols}'
+            })
+
+    # Check 4: Very small column widths
+    for col_idx, col in enumerate(table.columns):
+        col_width_inches = col.width / 914400
+        if col_width_inches < 0.3:
+            issues.append({
+                'slide': slide_num,
+                'shape': shape_name,
+                'type': 'TABLE_NARROW_COLUMN',
+                'severity': 'WARNING',
+                'description': f'Column {col_idx + 1} is very narrow ({col_width_inches:.2f}")'
+            })
+
+    # Check 5: Empty data rows (all cells empty)
+    for row_idx in range(1, num_rows):  # Skip header
+        row = table.rows[row_idx]
+        all_empty = all(not cell.text.strip() for cell in row.cells)
+        if all_empty:
+            issues.append({
+                'slide': slide_num,
+                'shape': shape_name,
+                'type': 'TABLE_EMPTY_ROW',
+                'severity': 'INFO',
+                'description': f'Data row {row_idx} is completely empty'
+            })
+
+    return issues
+
+
 def inspect_level1(pptx_path):
     """Quick inspection using python-pptx object model."""
     issues = []
@@ -46,6 +141,11 @@ def inspect_level1(pptx_path):
 
         for shape in slide.shapes:
             shape_name = shape.name
+
+            # Check tables
+            if shape.shape_type == MSO_SHAPE_TYPE.TABLE:
+                table = shape.table
+                issues.extend(inspect_table(slide_num, shape_name, table))
 
             # Check if shape is a connector (straight connectors validly have one dimension as 0)
             is_connector = (
@@ -288,9 +388,29 @@ def inspect_level4_overlaps(pptx_path, tolerance=0.1):
                     s2_has_text = (hasattr(s2, 'text_frame') and
                                   s2.has_text_frame and
                                   s2.text_frame.text.strip())
+                    s1_is_table = s1.shape_type == MSO_SHAPE_TYPE.TABLE
+                    s2_is_table = s2.shape_type == MSO_SHAPE_TYPE.TABLE
 
+                    # Table overlapping with text content is a warning
+                    if (s1_is_table or s2_is_table) and (s1_has_text or s2_has_text):
+                        issues.append({
+                            'slide': slide_num,
+                            'type': 'TABLE_TEXT_OVERLAP',
+                            'severity': 'WARNING',
+                            'description': f'Table "{s1.name if s1_is_table else s2.name}" overlaps with text content',
+                            'shapes': [s1.name, s2.name]
+                        })
+                    # Two tables overlapping
+                    elif s1_is_table and s2_is_table:
+                        issues.append({
+                            'slide': slide_num,
+                            'type': 'TABLE_OVERLAP',
+                            'severity': 'ERROR',
+                            'description': f'Tables "{s1.name}" and "{s2.name}" overlap',
+                            'shapes': [s1.name, s2.name]
+                        })
                     # Text overlapping text is a warning
-                    if s1_has_text and s2_has_text:
+                    elif s1_has_text and s2_has_text:
                         issues.append({
                             'slide': slide_num,
                             'type': 'TEXT_OVERLAP',

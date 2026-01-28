@@ -42,6 +42,9 @@ from PIL import Image
 # Import diagram renderer
 from diagram_renderer import render_diagram, parse_diagram_block, DiagramConfig
 
+# Import table renderer
+from table_renderer import render_table, parse_table_block, parse_markdown_table, TableConfig, TableStyle
+
 
 @dataclass
 class SlideContent:
@@ -51,8 +54,9 @@ class SlideContent:
     content: List[str] = field(default_factory=list)
     figure_path: Optional[str] = None
     diagram_spec: Optional[Dict] = None  # Parsed diagram specification
+    table_spec: Optional[Dict] = None    # Parsed table specification
     notes: Optional[str] = None
-    slide_type: str = "text_only"  # text_only, text_image, text_diagram, section, title
+    slide_type: str = "text_only"  # text_only, text_image, text_diagram, text_table, section, title
 
 
 @dataclass
@@ -147,6 +151,28 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
             diagram_block = diagram_match.group(1)
             slide.diagram_spec = parse_diagram_block(diagram_block)
             slide.slide_type = 'text_diagram'
+
+        # Extract table specification (markdown table or ```table block)
+        table_match = re.search(
+            r'\*\*Table\*\*:\s*\n```table\n(.+?)```',
+            slide_content,
+            re.DOTALL
+        )
+        if table_match:
+            table_block = table_match.group(1)
+            slide.table_spec = parse_table_block(table_block)
+            slide.slide_type = 'text_table'
+        else:
+            # Check for inline markdown table in content
+            md_table_match = re.search(
+                r'\*\*Table\*\*:\s*\n(\|.+?\|(?:\n\|.+?\|)+)',
+                slide_content,
+                re.DOTALL
+            )
+            if md_table_match:
+                md_table = md_table_match.group(1)
+                slide.table_spec = parse_markdown_table(md_table)
+                slide.slide_type = 'text_table'
 
         # Extract notes
         notes_match = re.search(r'\*\*Notes\*\*:\s*(.+?)(?:\n\*\*|\Z)', slide_content, re.DOTALL)
@@ -317,6 +343,7 @@ def generate_presentation(
 
     image_count = 0
     diagram_count = 0
+    table_count = 0
 
     for i, slide_content in enumerate(slides_data):
         if i >= len(prs.slides):
@@ -398,6 +425,27 @@ def generate_presentation(
                 print(f"Slide {i+1}: {slide_content.title[:40]}...")
                 print(f"  Diagram: {diagram_type} with {node_count} nodes, {len(shapes)} shapes")
 
+        elif slide_content.slide_type == 'text_table' and slide_content.table_spec:
+            # Fill content with resized width (same as images/diagrams)
+            fill_body(slide, slide_content.content, resize_width=layout_config.text_width)
+
+            # Configure table position
+            table_config = TableConfig(
+                left=layout_config.image_left,
+                top=layout_config.image_top,
+                width=layout_config.image_width
+            )
+
+            # Render the table
+            table_shape = render_table(slide, slide_content.table_spec, table_config)
+
+            if table_shape:
+                table_count += 1
+                headers = slide_content.table_spec.get('headers', [])
+                rows = slide_content.table_spec.get('rows', [])
+                print(f"Slide {i+1}: {slide_content.title[:40]}...")
+                print(f"  Table: {len(headers)} cols x {len(rows)+1} rows")
+
         elif slide_content.slide_type in ('text_only', 'section'):
             # Full-width text
             fill_body(slide, slide_content.content)
@@ -410,7 +458,7 @@ def generate_presentation(
     prs.save(str(output_path))
 
     print()
-    print(f"Generated {len(slides_data)} slides with {image_count} images and {diagram_count} diagrams")
+    print(f"Generated {len(slides_data)} slides with {image_count} images, {diagram_count} diagrams, and {table_count} tables")
     print(f"Saved to: {output_path}")
 
 
@@ -497,6 +545,14 @@ def main():
         dtype = s.diagram_spec.get('type', 'unknown')
         nodes = len(s.diagram_spec.get('nodes', []))
         print(f"  Slide {s.number}: {dtype} diagram ({nodes} nodes)")
+
+    # Count slides with tables
+    table_slides = [s for s in slides_data if s.table_spec]
+    print(f"Slides with tables: {len(table_slides)}")
+    for s in table_slides:
+        headers = s.table_spec.get('headers', [])
+        rows = s.table_spec.get('rows', [])
+        print(f"  Slide {s.number}: {len(headers)} cols x {len(rows)+1} rows")
     print()
 
     # Configure layouts

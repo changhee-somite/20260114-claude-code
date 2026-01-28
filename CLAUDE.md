@@ -5,6 +5,7 @@ This project includes custom skills for presentation development:
 | Skill | Purpose | Usage |
 |-------|---------|-------|
 | `pptx-images` | Insert images into slides | `python scripts/add_images_only.py input.pptx output.pptx --mapping image-mapping.json` |
+| `pptx-tables` | Insert tables into slides | `python scripts/add_tables.py input.pptx output.pptx --mapping table-mapping.json` |
 | `pptx-inspector` | Validate presentations | `python scripts/pptx_inspector.py presentation.pptx --level 2` |
 | `conversation-search` | Search past sessions | `python skills/conversation-search/search.py "keyword"` |
 

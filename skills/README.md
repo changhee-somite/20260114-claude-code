@@ -7,6 +7,7 @@ This directory contains custom skills developed during this presentation project
 | Skill | Description | Script |
 |-------|-------------|--------|
 | `pptx-images` | Insert images into presentations | `scripts/add_images_only.py` |
+| `pptx-tables` | Insert tables into presentations | `scripts/add_tables.py` |
 | `pptx-inspector` | Validate presentations for issues | `scripts/pptx_inspector.py` |
 | `conversation-search` | Search past Claude Code conversations | `skills/conversation-search/search.py` |
 
@@ -35,6 +36,48 @@ python scripts/add_images_only.py \
 - Correctly handles the python-pptx position offset bug
 
 See `skills/pptx-images/SKILL.md` for full documentation.
+
+---
+
+## pptx-tables
+
+Insert tables into PowerPoint presentations with customizable styling.
+
+**When to use:**
+- Adding comparison tables to slides
+- Displaying structured data or features
+- Creating formatted data grids
+
+**Usage:**
+```bash
+python scripts/add_tables.py \
+    input.pptx output.pptx \
+    --mapping table-mapping.json
+```
+
+**Features:**
+- Parses markdown tables or JSON specifications
+- Customizable header and row styling
+- Alternating row colors
+- Automatic column width calculation
+- Correctly handles the python-pptx position offset bug
+- Integration with pptx_inspector for validation
+
+**Mapping format:**
+```json
+{
+  "slides": [{
+    "slide_number": 8,
+    "tables": [{
+      "headers": ["Feature", "Option A", "Option B"],
+      "rows": [["Speed", "Fast", "Faster"]],
+      "style": {"header_fill": "#4472C4"}
+    }]
+  }]
+}
+```
+
+See `skills/pptx-tables/SKILL.md` for full documentation.
 
 ---
 
@@ -87,9 +130,9 @@ See `skills/conversation-search/SKILL.md` for full documentation.
 
 ---
 
-## Two-Stage PPTX Workflow
+## Multi-Stage PPTX Workflow
 
-These skills support a two-stage workflow for creating presentations:
+These skills support a multi-stage workflow for creating presentations:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -100,17 +143,31 @@ These skills support a two-stage workflow for creating presentations:
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────┐
-│  Stage 2: Image Insertion (pptx-images skill)           │
+│  Stage 2: Content Insertion                             │
 │                                                         │
-│  text.pptx + image-mapping.json → add_images_only.py    │
-│      → final.pptx                                       │
+│  Images: text.pptx + image-mapping.json                 │
+│          → add_images_only.py                           │
+│                                                         │
+│  Tables: text.pptx + table-mapping.json                 │
+│          → add_tables.py                                │
+│                                                         │
+│  Diagrams: text.pptx + diagram specs                    │
+│          → diagram_renderer.py                          │
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────┐
 │  Validation (pptx-inspector skill)                      │
 │                                                         │
 │  final.pptx → pptx_inspector.py → issues report         │
+│                                                         │
+│  Validates: images, tables, diagrams, text, overlaps    │
 └─────────────────────────────────────────────────────────┘
+```
+
+**Or use the unified generator:**
+```
+PRESENTATION.md + template.pptx → generate_presentation.py → final.pptx
+(Handles text, images, diagrams, and tables in one step)
 ```
 
 ---
