@@ -37,6 +37,8 @@ from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.enum.shapes import MSO_SHAPE_TYPE, PP_PLACEHOLDER
 from pptx.dml.color import RGBColor
+from pptx.oxml.ns import qn
+from lxml import etree
 from PIL import Image
 
 # Import diagram renderer
@@ -69,6 +71,26 @@ TEMPLATE_PARAGRAPH_SPACING = {
 }
 
 MIN_FONT_SIZE = 10  # Don't shrink fonts below this size
+
+
+def disable_bullet(paragraph):
+    """
+    Disable the bullet for a paragraph by adding <a:buNone/> to the XML.
+
+    python-pptx doesn't have a built-in way to disable bullets, so we
+    manipulate the underlying XML directly.
+    """
+    # Get or create paragraph properties
+    pPr = paragraph._p.get_or_add_pPr()
+
+    # Remove any existing bullet elements
+    for child in list(pPr):
+        tag = etree.QName(child.tag).localname
+        if tag.startswith('bu'):
+            pPr.remove(child)
+
+    # Add buNone to disable bullet
+    etree.SubElement(pPr, qn('a:buNone'))
 
 
 @dataclass
@@ -516,7 +538,7 @@ def fill_body_placeholder(slide, content: List[str], placeholder_idx: int,
 
         # For numbered items, disable the bullet
         if is_numbered:
-            p.bullet = False
+            disable_bullet(p)
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)
@@ -636,7 +658,7 @@ def fill_content_placeholder(slide, content: List[str], placeholder_idx: int,
 
         # For numbered items, disable the bullet
         if is_numbered:
-            p.bullet = False
+            disable_bullet(p)
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)
@@ -916,7 +938,7 @@ def fill_body(slide, content: List[str], resize_width: float = None,
 
         # For numbered items, disable the bullet
         if is_numbered:
-            p.bullet = False
+            disable_bullet(p)
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)
