@@ -21,3 +21,6 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 .env
+
+# Claude Code local settings
+.claude/settings.local.json
