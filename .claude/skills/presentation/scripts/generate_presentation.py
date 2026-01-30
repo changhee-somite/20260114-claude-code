@@ -47,6 +47,12 @@ from diagram_renderer import render_diagram, parse_diagram_block, DiagramConfig
 # Import table renderer
 from table_renderer import render_table, parse_table_block, parse_markdown_table, TableConfig, TableStyle
 
+# Import layout discovery
+from layout_discovery import (
+    discover_layouts, LayoutMapping, LayoutCapabilities,
+    get_fallback_positioning
+)
+
 # Default template path (relative to this script's directory)
 DEFAULT_TEMPLATE = Path(__file__).parent.parent / "templates" / "cellularintelligence.pptx"
 
@@ -1113,81 +1119,34 @@ def insert_image(slide, image_path: Path, left: float, top: float,
     return pic
 
 
-def find_layout_by_name(prs, name_pattern: str):
-    """Find a slide layout by name pattern (case-insensitive partial match)."""
-    name_lower = name_pattern.lower()
-    for layout in prs.slide_layouts:
-        if name_lower in layout.name.lower():
-            return layout
-    return None
-
-
-def get_layout_for_slide_type(prs, slide_type: str, has_content: bool = True):
+def get_layout_for_slide_type(
+    prs,
+    slide_type: str,
+    layout_mapping: LayoutMapping
+) -> Tuple[object, Optional[LayoutCapabilities], Dict]:
     """
-    Get the appropriate layout for a slide type.
+    Get the appropriate layout for a slide type using dynamic discovery.
 
-    Updated for cellularintelligence.pptx template v2:
-    - Layout 0: Title - title slides with subtitle
-    - Layout 1: Title & Bullets - text-only slides (BODY full-width)
-    - Layout 2: Title & Content - full-width content (OBJECT[10] full-width)
-    - Layout 3: Two Content (horizontal) - two OBJECT placeholders side-by-side
-    - Layout 4: Text and Content (horizontal) - BODY[13] left + OBJECT[2] right
-    - Layout 5: Two Content (vertical) - two OBJECT placeholders stacked
-    - Layout 6: Content and Text (vertical) - OBJECT[1] top + BODY[13] bottom
+    Args:
+        prs: Presentation object
+        slide_type: Type of slide (title, text_only, text_image, etc.)
+        layout_mapping: LayoutMapping from discover_layouts()
+
+    Returns:
+        Tuple of (layout, LayoutCapabilities or None, fallback_config dict)
     """
-    # Direct index mapping for the updated template (7 layouts)
-    if len(prs.slide_layouts) >= 7:
-        index_map = {
-            'title': 0,              # Title layout with subtitle
-            'section': 0,            # Use title layout for sections too
-            'text_only': 1,          # Title & Bullets (BODY full-width)
-            'text_image': 4,         # Text and Content horizontal (BODY[13] + OBJECT[2])
-            'text_image_top': 6,     # Content and Text vertical (OBJECT[1] + BODY[13])
-            'text_diagram': 4,       # Text and Content horizontal
-            'text_table': 4,         # Text and Content horizontal (with text)
-            'text_table_full': 2,    # Title & Content (OBJECT[10] full-width)
-            'content_only': 2,       # Title & Content (full-width content, no text)
-        }
-        idx = index_map.get(slide_type, 1)
-        return prs.slide_layouts[idx]
+    # Use dynamic layout discovery
+    caps, fallback_config = layout_mapping.get_layout_for_type(slide_type)
 
-    # Fallback for older 4-layout template
-    if len(prs.slide_layouts) == 4:
-        index_map = {
-            'title': 0,
-            'section': 0,
-            'text_only': 1,
-            'text_image': 2,
-            'text_image_top': 3,
-            'text_diagram': 2,
-            'text_table': 1,
-        }
-        idx = index_map.get(slide_type, 1)
-        return prs.slide_layouts[idx]
+    if caps is None:
+        # No suitable layout found - use first available layout
+        print(f"  Warning: No layout found for slide type '{slide_type}', using first layout")
+        layout = prs.slide_layouts[0]
+        return layout, None, fallback_config
 
-    # Fallback: Try to find matching layouts by name
-    layout_map = {
-        'title': ['title'],
-        'section': ['title'],
-        'text_only': ['title & bullets', 'bullets'],
-        'text_image': ['text and content'],
-        'text_image_top': ['content and text'],
-        'text_diagram': ['text and content'],
-        'text_table': ['text and content'],
-        'text_table_full': ['title & content'],
-        'content_only': ['title & content'],
-    }
-
-    patterns = layout_map.get(slide_type, ['title & bullets'])
-    for pattern in patterns:
-        layout = find_layout_by_name(prs, pattern)
-        if layout:
-            return layout
-
-    # Fallback to first non-title layout
-    if len(prs.slide_layouts) > 1:
-        return prs.slide_layouts[1]
-    return prs.slide_layouts[0]
+    # Return the layout from the presentation by index
+    layout = prs.slide_layouts[caps.index]
+    return layout, caps, fallback_config
 
 
 def generate_presentation(
@@ -1209,6 +1168,11 @@ def generate_presentation(
     print(f"Available layouts: {len(prs.slide_layouts)}")
     for i, layout in enumerate(prs.slide_layouts):
         print(f"  {i}: {layout.name}")
+    print()
+
+    # Discover layouts dynamically
+    layout_mapping = discover_layouts(prs, verbose=True)
+
     print(f"Processing {len(slides_data)} slides...")
     print()
 
@@ -1238,12 +1202,14 @@ def generate_presentation(
             num_cols = len(slide_content.table_spec.get('headers', []))
             use_full_width = not has_content or num_cols > 3
             if use_full_width:
-                effective_slide_type = 'text_table_full'  # Uses Layout 2 (Title & Content)
+                effective_slide_type = 'text_table_full'
             else:
-                effective_slide_type = 'text_table'  # Uses Layout 4 (Text and Content)
+                effective_slide_type = 'text_table'
 
-        # Create a new slide with appropriate layout
-        layout = get_layout_for_slide_type(prs, effective_slide_type)
+        # Create a new slide with appropriate layout using dynamic discovery
+        layout, caps, fallback_config = get_layout_for_slide_type(
+            prs, effective_slide_type, layout_mapping
+        )
         slide = prs.slides.add_slide(layout)
 
         # Fill title
@@ -1252,7 +1218,7 @@ def generate_presentation(
 
         # Handle based on slide type
         if slide_content.slide_type == 'text_image' and slide_content.figure_path:
-            # Layout 4 "Text and Content": BODY[13] left, OBJECT[2] right
+            # Side-by-side layout: text on left, image on right
             clean_content = [
                 c for c in slide_content.content
                 if not c.startswith('[Figure:') and
@@ -1269,10 +1235,21 @@ def generate_presentation(
                    '.png]' not in item.text
             ] if slide_content.content_items else None
 
-            # For new template (7 layouts): use BODY[13] for text
-            # For old template (4 layouts): use OBJECT[1] for text
-            text_placeholder_idx = 13 if len(prs.slide_layouts) >= 7 else 1
-            image_placeholder_idx = 2  # OBJECT[2] for image in both templates
+            # Determine placeholder indices from capabilities
+            if caps and caps.has_typed_placeholders and caps.body_idx is not None:
+                # Use typed placeholder (BODY for text)
+                text_placeholder_idx = caps.body_idx
+            elif caps and caps.left_content_idx is not None:
+                # Use left content placeholder
+                text_placeholder_idx = caps.left_content_idx
+            else:
+                # Fallback
+                text_placeholder_idx = 1
+
+            if caps and caps.right_content_idx is not None:
+                image_placeholder_idx = caps.right_content_idx
+            else:
+                image_placeholder_idx = 2
 
             # Fill text placeholder
             was_scaled, scale = fill_body_placeholder(
@@ -1315,7 +1292,7 @@ def generate_presentation(
                 print(f"Slide {i+1}: Image not found: {fig_path}")
 
         elif slide_content.slide_type == 'text_image_top' and slide_content.figure_path:
-            # Layout 6 "Content and Text (vertical)": OBJECT[1] top, BODY[13] bottom
+            # Stacked layout: image on top, text on bottom
             clean_content = [
                 c for c in slide_content.content
                 if not c.startswith('[Figure:') and
@@ -1332,10 +1309,19 @@ def generate_presentation(
                    '.png]' not in item.text
             ] if slide_content.content_items else None
 
-            # For new template (7 layouts): OBJECT[1] top, BODY[13] bottom
-            # For old template (4 layouts): OBJECT[1] top, OBJECT[2] bottom
-            image_placeholder_idx = 1  # Top
-            text_placeholder_idx = 13 if len(prs.slide_layouts) >= 7 else 2  # Bottom
+            # Determine placeholder indices from capabilities
+            if caps and caps.top_content_idx is not None:
+                image_placeholder_idx = caps.top_content_idx
+            else:
+                image_placeholder_idx = 1
+
+            if caps and caps.has_typed_placeholders and caps.body_idx is not None:
+                # Use typed placeholder (BODY for text)
+                text_placeholder_idx = caps.body_idx
+            elif caps and caps.bottom_content_idx is not None:
+                text_placeholder_idx = caps.bottom_content_idx
+            else:
+                text_placeholder_idx = 2
 
             # Resolve figure path
             fig_path = slide_content.figure_path
@@ -1419,17 +1405,35 @@ def generate_presentation(
 
             table_shape = None
 
-            if use_full_width and len(prs.slide_layouts) >= 7:
-                # Layout 2 "Title & Content" with OBJECT[10] full-width
-                # Insert table into the full-width placeholder
-                table_shape = insert_table_into_placeholder(
-                    slide, slide_content.table_spec, placeholder_idx=10
-                )
-            elif len(prs.slide_layouts) >= 7:
-                # Layout 4 "Text and Content" with BODY[13] left + OBJECT[2] right
-                # Fill BODY[13] with text
+            if use_full_width:
+                # Full-width table - use body placeholder for table
+                if caps and caps.body_idx is not None:
+                    table_shape = insert_table_into_placeholder(
+                        slide, slide_content.table_spec, placeholder_idx=caps.body_idx
+                    )
+                else:
+                    # Fallback to manual positioning
+                    table_config = TableConfig(left=0.5, top=1.5, width=12.3)
+                    hide_content_placeholders(slide)
+                    table_shape = render_table(slide, slide_content.table_spec, table_config)
+            else:
+                # Split layout - text on left, table on right
+                # Determine placeholder indices from capabilities
+                if caps and caps.has_typed_placeholders and caps.body_idx is not None:
+                    text_placeholder_idx = caps.body_idx
+                elif caps and caps.left_content_idx is not None:
+                    text_placeholder_idx = caps.left_content_idx
+                else:
+                    text_placeholder_idx = 1
+
+                if caps and caps.right_content_idx is not None:
+                    table_placeholder_idx = caps.right_content_idx
+                else:
+                    table_placeholder_idx = 2
+
+                # Fill text placeholder
                 was_scaled, scale = fill_body_placeholder(
-                    slide, slide_content.content, placeholder_idx=13,
+                    slide, slide_content.content, placeholder_idx=text_placeholder_idx,
                     content_items=slide_content.content_items
                 )
                 if was_scaled:
@@ -1440,36 +1444,10 @@ def generate_presentation(
                         'base_font': 24,
                         'scaled_font': int(24 * scale)
                     })
-                # Insert table into OBJECT[2]
+                # Insert table into right placeholder
                 table_shape = insert_table_into_placeholder(
-                    slide, slide_content.table_spec, placeholder_idx=2
+                    slide, slide_content.table_spec, placeholder_idx=table_placeholder_idx
                 )
-            else:
-                # Fallback for older templates - use hardcoded positions
-                if has_content:
-                    was_scaled, scale = fill_body(
-                        slide, slide_content.content, resize_width=layout_config.text_width,
-                        content_items=slide_content.content_items
-                    )
-                    if was_scaled:
-                        compressions.append({
-                            'slide': i + 1,
-                            'title': slide_content.title[:40] if slide_content.title else 'Untitled',
-                            'scale': scale,
-                            'base_font': 24,
-                            'scaled_font': int(24 * scale)
-                        })
-                    table_config = TableConfig(
-                        left=layout_config.image_left,
-                        top=layout_config.image_top,
-                        width=layout_config.image_width
-                    )
-                else:
-                    table_config = TableConfig(
-                        left=0.5, top=1.5, width=12.3
-                    )
-                hide_content_placeholders(slide, exclude_idx=1 if has_content else None)
-                table_shape = render_table(slide, slide_content.table_spec, table_config)
 
             if table_shape:
                 table_count += 1

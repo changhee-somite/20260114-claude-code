@@ -40,6 +40,7 @@ class LayoutCapabilities:
     has_title: bool = False
     has_subtitle: bool = False        # Body placeholder positioned as subtitle
     has_single_body: bool = False     # Single BODY placeholder (full-width text)
+    has_single_object: bool = False   # Single OBJECT placeholder (full-width content)
     has_two_content: bool = False     # Two content placeholders
 
     # Content arrangement (for two-content layouts)
@@ -79,6 +80,8 @@ class LayoutMapping:
     text_image_top: Optional[LayoutCapabilities] = None
     text_diagram: Optional[LayoutCapabilities] = None
     text_table: Optional[LayoutCapabilities] = None
+    text_table_full: Optional[LayoutCapabilities] = None  # Full-width table (no text)
+    content_only: Optional[LayoutCapabilities] = None     # Full-width OBJECT placeholder
 
     # All discovered layouts for reference
     all_layouts: List[LayoutCapabilities] = field(default_factory=list)
@@ -99,7 +102,9 @@ class LayoutMapping:
             'text_image': self.text_image,
             'text_image_top': self.text_image_top,
             'text_diagram': self.text_diagram or self.text_image,
-            'text_table': self.text_table or self.text_only,
+            'text_table': self.text_table or self.text_image,  # Split layout for tables with text
+            'text_table_full': self.text_table_full or self.content_only or self.text_only,  # Full-width table
+            'content_only': self.content_only or self.text_only,
         }
 
         layout = primary.get(slide_type)
@@ -256,19 +261,24 @@ def analyze_layout(layout, index: int, slide_width: float) -> LayoutCapabilities
     content_phs = body_phs + object_phs
 
     if len(content_phs) == 1:
-        # Single content area
-        caps.has_single_body = True
-        caps.body_idx = content_phs[0].idx
+        # Single content area - distinguish between BODY and OBJECT types
+        content_ph = content_phs[0]
+        caps.body_idx = content_ph.idx  # Use body_idx for any single content placeholder
+
+        if content_ph.type == 2:  # BODY type
+            caps.has_single_body = True
+        elif content_ph.type == 7:  # OBJECT type
+            caps.has_single_object = True
 
         # Check if this is a subtitle (positioned below title, relatively small)
         if caps.has_title and title_phs:
             title_ph = title_phs[0]
-            content_ph = content_phs[0]
             # Subtitle heuristic: below title, height < 2 inches
             if content_ph.top > title_ph.top + title_ph.height and content_ph.height < 2.5:
                 caps.has_subtitle = True
                 caps.subtitle_idx = content_ph.idx
-                caps.has_single_body = False  # It's a subtitle, not a body
+                caps.has_single_body = False
+                caps.has_single_object = False  # It's a subtitle, not content
 
     elif len(content_phs) >= 2:
         # Two or more content areas
@@ -346,6 +356,11 @@ def discover_layouts(prs: Presentation, verbose: bool = True) -> LayoutMapping:
             not caps.has_subtitle and mapping.text_only is None):
             mapping.text_only = caps
 
+        # Content-only: has title + single full-width OBJECT (for tables, images, etc.)
+        if (caps.has_title and caps.has_single_object and
+            not caps.has_subtitle and mapping.content_only is None):
+            mapping.content_only = caps
+
         # Text+Image side-by-side: prefer typed (BODY left + OBJECT right)
         if caps.has_title and caps.has_two_content and caps.content_arrangement == "side_by_side":
             if caps.has_typed_placeholders:
@@ -378,6 +393,12 @@ def discover_layouts(prs: Presentation, verbose: bool = True) -> LayoutMapping:
             print(f"  Text-only: {mapping.text_only.name} (index {mapping.text_only.index})")
         else:
             print("  Text-only: None")
+
+        if mapping.content_only:
+            print(f"  Content-only: {mapping.content_only.name} (index {mapping.content_only.index})")
+            print(f"    Content placeholder idx={mapping.content_only.body_idx}")
+        else:
+            print("  Content-only: None (will use text_only fallback)")
 
         if mapping.text_image:
             print(f"  Text+Image (side-by-side): {mapping.text_image.name} (index {mapping.text_image.index})")
