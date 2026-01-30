@@ -243,9 +243,13 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
                         bullets.append(text)
                         content_items.append(ContentItem(text=text, is_code=False))
                 elif line_stripped.startswith('>'):
-                    # Quote
+                    # Quote - only wrap with quotes if not already quoted
                     quote_text = line_stripped.lstrip('> ')
-                    text = f'"{quote_text}"'
+                    # Check if text already starts with a quote (handles "text" and "text" — Author)
+                    if quote_text.startswith('"'):
+                        text = quote_text  # Already has opening quote
+                    else:
+                        text = f'"{quote_text}"'
                     bullets.append(text)
                     content_items.append(ContentItem(text=text, is_code=False))
                 elif not line_stripped.startswith('**'):
