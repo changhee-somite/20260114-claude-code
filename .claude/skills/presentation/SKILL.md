@@ -186,10 +186,24 @@ Use sentence case (capitalize first word and proper nouns only).
 The default template is `.claude/skills/presentation/templates/cellularintelligence.pptx`, which includes:
 
 - Slide master with proper font sizes and paragraph spacing
-- Four layouts: Title, Title & Bullets, Two Content, 1_Two Content
 - Dark background theme
+- 11 layouts (merged from official template + skill layouts):
 
-The generator automatically handles layout selection and font scaling for content that would overflow.
+| Layout | Purpose |
+|--------|---------|
+| Title | Title slide with subtitle |
+| Title - Center | Centered title (no subtitle) |
+| Title & Bullets | Text-only content slide |
+| 1_Title & Bullets | Alternate text-only layout |
+| Title, Bullets & Photo | Text + picture placeholder |
+| Blank | Empty slide |
+| Title & Content | Single content area |
+| Two Content (horizontal) | Side-by-side content areas |
+| Text and Content (horizontal) | Text left, image right |
+| Two Content (vertical) | Stacked content areas |
+| Content and Text (vertical) | Image top, text bottom |
+
+The generator automatically selects the appropriate layout and handles font scaling for content that would overflow.
 
 ## Validation Checklist
 
