@@ -1,15 +1,56 @@
 # Available Project Skills
 
-This project includes custom skills for presentation development:
+This project includes custom skills for Claude Code workflows. All skills are in `.claude/skills/` and are portable to other repos.
 
-| Skill | Purpose | Usage |
-|-------|---------|-------|
-| `pptx-images` | Insert images into slides | `python scripts/add_images_only.py input.pptx output.pptx --mapping image-mapping.json` |
-| `pptx-tables` | Insert tables into slides | `python scripts/add_tables.py input.pptx output.pptx --mapping table-mapping.json` |
-| `pptx-inspector` | Validate presentations | `python scripts/pptx_inspector.py presentation.pptx --level 2` |
-| `conversation-search` | Search past sessions | `python skills/conversation-search/search.py "keyword"` |
+## Presentation Generator
 
-See `skills/README.md` for full documentation.
+Generate PPTX from markdown specifications with:
+- **Proactive overflow detection** - Automatically scales fonts when content would overflow
+- **Bullet hierarchy** - Preserves indentation levels (sub-bullets)
+- **Bold text formatting** - Parses `**bold**` markdown into runs
+- **Tables and diagrams** - Renders markdown tables and vector diagrams
+
+```bash
+# Generate presentation from PRESENTATION.md
+python .claude/skills/presentation/scripts/generate_presentation.py \
+    --source docs/PRESENTATION.md \
+    --figures figures/ \
+    --output output/presentation.pptx
+
+# Validate the output
+python .claude/skills/presentation/scripts/pptx_inspector.py output/presentation.pptx --level 3
+
+# Auto-fix text overflow issues
+python .claude/skills/presentation/scripts/pptx_inspector.py output/presentation.pptx --level 3 --fix
+```
+
+See `.claude/skills/presentation/SKILL.md` for full documentation.
+
+## Conversation Search
+
+Search past Claude Code sessions by keyword, project, or date.
+
+```bash
+# List recent sessions
+python .claude/skills/conversation-search/search.py --list
+
+# Search for keyword
+python .claude/skills/conversation-search/search.py "image insertion"
+
+# View session content
+python .claude/skills/conversation-search/search.py --session <session-id>
+```
+
+See `.claude/skills/conversation-search/SKILL.md` for full documentation.
+
+## Portability
+
+To use these skills in another project:
+```bash
+cp -r .claude/skills/* /path/to/other-project/.claude/skills/
+```
+
+See `.claude/skills/README.md` for details. Legacy skill docs are archived in `docs/archive/`.
 
 
 # Objectives & Background

@@ -13,29 +13,27 @@ This repository contains materials for a 45-60 minute presentation introducing C
 
 ```
 .
+├── .claude/
+│   └── skills/              # Portable Claude Code skills
+│       ├── presentation/    # PPTX generator from markdown
+│       │   ├── SKILL.md
+│       │   ├── scripts/     # generate_presentation.py, pptx_inspector.py
+│       │   └── templates/   # PPTX template
+│       └── conversation-search/  # Search past Claude Code sessions
+│           ├── SKILL.md
+│           └── search.py
 ├── docs/
 │   ├── PRESENTATION.md      # Complete slide outline (49 slides)
 │   ├── NARRATIVE.md         # Presentation flow and structure
-│   ├── OVERVIEW.md          # High-level topic overview
-│   └── topics/              # Deep-dive topic documentation
-│       ├── 01-what-is-claude-code.md
-│       ├── 02-context-engineering.md
-│       ├── 03-permissions-and-safety.md
-│       ├── 04-subagents.md
-│       ├── 05-skills.md
-│       ├── 06-workflow-paradigm.md
-│       ├── 07-cursor-vs-claude-code.md
-│       ├── 08-alternatives-comparison.md
-│       └── ...
+│   ├── topics/              # Deep-dive topic documentation
+│   │   ├── 01-what-is-claude-code.md
+│   │   ├── 02-context-engineering.md
+│   │   └── ...
+│   └── archive/             # Legacy skill documentation
 ├── figures/                 # Screenshots and diagrams for slides
+├── output/                  # Generated PPTX files
 ├── scratch/                 # Raw notes and initial research
-├── scripts/                 # PPTX generation and validation tools
-│   ├── add_images_only.py   # Image insertion with position offset fix
-│   ├── pptx_inspector.py    # Validate PPTX for layout issues
-│   └── README.md            # Script documentation
-├── workspace/               # Working files and image mappings
-├── CLAUDE.md                # Project instructions for Claude Code
-└── *.pptx                   # Generated presentation files
+└── CLAUDE.md                # Project instructions for Claude Code
 ```
 
 ## Key Topics Covered
@@ -66,12 +64,12 @@ docs/PRESENTATION.md (slide outline)
 
 The git commit history documents each step of the human-agent collaboration.
 
-## PPTX Generation with Images
+## PPTX Generation
 
-This project includes a two-stage workflow for generating PowerPoint presentations with integrated images, along with validation tools to catch layout issues.
+This project includes a unified workflow for generating PowerPoint presentations from markdown, with support for images, tables, and diagrams.
 
-- **Workflow**: [docs/PPTX-IMAGE-SKILL-SPEC.md](docs/PPTX-IMAGE-SKILL-SPEC.md)
-- **Validation**: [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md)
+- **Skill Documentation**: [.claude/skills/presentation/SKILL.md](.claude/skills/presentation/SKILL.md)
+- **Technical Reference**: [.claude/skills/presentation/README.md](.claude/skills/presentation/README.md)
 - **Research & Lessons Learned**: [docs/IMAGE-INSERTION-RESEARCH.md](docs/IMAGE-INSERTION-RESEARCH.md)
 
 ## Quick Start
@@ -94,9 +92,8 @@ claude
 | [docs/PRESENTATION.md](docs/PRESENTATION.md) | Complete slide-by-slide outline |
 | [docs/topics/07-cursor-vs-claude-code.md](docs/topics/07-cursor-vs-claude-code.md) | Cursor vs Claude Code comparison |
 | [docs/topics/02-context-engineering.md](docs/topics/02-context-engineering.md) | Context window management strategies |
-| [docs/PPTX-IMAGE-SKILL-SPEC.md](docs/PPTX-IMAGE-SKILL-SPEC.md) | PPTX with images workflow specification |
-| [docs/PPTX-INSPECTOR-SKILL.md](docs/PPTX-INSPECTOR-SKILL.md) | PPTX validation techniques and patterns |
-| [scripts/add_images_only.py](scripts/add_images_only.py) | Image insertion script with bug fix |
+| [.claude/skills/presentation/SKILL.md](.claude/skills/presentation/SKILL.md) | PPTX generation skill documentation |
+| [.claude/skills/conversation-search/SKILL.md](.claude/skills/conversation-search/SKILL.md) | Conversation search skill |
 | [CLAUDE.md](CLAUDE.md) | Project instructions demonstrating the pattern |
 
 ## Resources
