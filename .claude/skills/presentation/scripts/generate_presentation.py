@@ -511,8 +511,12 @@ def fill_body_placeholder(slide, content: List[str], placeholder_idx: int,
             continue
 
         # Detect indentation level and clean the text
-        level, cleaned_text = detect_indent_level(item)
+        level, cleaned_text, is_numbered = detect_indent_level(item)
         p.level = level
+
+        # For numbered items, disable the bullet
+        if is_numbered:
+            p.bullet = False
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)
@@ -627,8 +631,12 @@ def fill_content_placeholder(slide, content: List[str], placeholder_idx: int,
             continue
 
         # Detect indentation level and clean the text
-        level, cleaned_text = detect_indent_level(item)
+        level, cleaned_text, is_numbered = detect_indent_level(item)
         p.level = level
+
+        # For numbered items, disable the bullet
+        if is_numbered:
+            p.bullet = False
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)
@@ -679,7 +687,7 @@ def apply_formatted_text(paragraph, text: str):
         run.text = text[last_end:]
 
 
-def detect_indent_level(text: str) -> Tuple[int, str]:
+def detect_indent_level(text: str) -> Tuple[int, str, bool]:
     """
     Detect indentation level from leading whitespace.
 
@@ -687,7 +695,10 @@ def detect_indent_level(text: str) -> Tuple[int, str]:
         text: Text that may have leading spaces indicating hierarchy
 
     Returns:
-        Tuple of (level, cleaned_text) where level is 0-3
+        Tuple of (level, cleaned_text, is_numbered) where:
+        - level is 0-3
+        - cleaned_text is the text to display
+        - is_numbered indicates if this is a numbered list item (no bullet needed)
     """
     # Count leading spaces
     stripped = text.lstrip()
@@ -696,18 +707,24 @@ def detect_indent_level(text: str) -> Tuple[int, str]:
     # 2-4 spaces = 1 level of indentation
     level = min(3, leading_spaces // 2)  # Cap at level 3
 
+    # Check for numbered list items (e.g., "1. ", "2. ", "10. ")
+    numbered_match = re.match(r'^(\d+)\.\s+(.+)$', stripped)
+    if numbered_match:
+        # Keep the number as part of the text, mark as numbered
+        return level, stripped, True
+
     # Check for sub-bullets (e.g., "- item" or "* item")
     # BUT NOT **bold** markdown patterns
     if stripped.startswith(('-', '•')):
         # Remove the bullet marker (dash or bullet only, not asterisk)
         cleaned = re.sub(r'^[-•]\s*', '', stripped)
-        return level, cleaned
+        return level, cleaned, False
     elif stripped.startswith('*') and not stripped.startswith('**'):
         # Single asterisk bullet, not bold marker
         cleaned = re.sub(r'^\*\s*', '', stripped)
-        return level, cleaned
+        return level, cleaned, False
 
-    return level, stripped
+    return level, stripped, False
 
 
 def estimate_content_overflow(content: List[str], width_inches: float, height_inches: float) -> Tuple[bool, float]:
@@ -746,7 +763,7 @@ def estimate_content_overflow(content: List[str], width_inches: float, height_in
     lines_needed_pt = 0
 
     for i, item in enumerate(items):
-        level, text = detect_indent_level(item)
+        level, text, _ = detect_indent_level(item)
         font_size = TEMPLATE_FONT_SIZES.get(level, 18)
         para_spacing = TEMPLATE_PARAGRAPH_SPACING.get(level, 12)
 
@@ -775,13 +792,16 @@ def estimate_content_overflow(content: List[str], width_inches: float, height_in
     # Calculate scale factor needed to fit
     # Note: scaling fonts doesn't scale paragraph spacing, so we need to be more aggressive
     # Estimate how much we can save by scaling fonts only
-    font_only_height = sum(
-        max(1, len(detect_indent_level(item)[1]) /
-            max(1, (effective_width_pt - detect_indent_level(item)[0] * 0.3 * 72) /
-                (TEMPLATE_FONT_SIZES.get(detect_indent_level(item)[0], 18) * 0.5))) *
-        TEMPLATE_FONT_SIZES.get(detect_indent_level(item)[0], 18)
-        for item in items
-    )
+    def calc_item_height(item):
+        level, text, _ = detect_indent_level(item)
+        font_size = TEMPLATE_FONT_SIZES.get(level, 18)
+        indent_reduction = level * 0.3 * 72
+        adjusted_width = max(72, effective_width_pt - indent_reduction)
+        chars_per_line = max(1, adjusted_width / (font_size * 0.5))
+        text_lines = max(1, len(text) / chars_per_line)
+        return text_lines * font_size
+
+    font_only_height = sum(calc_item_height(item) for item in items)
     spacing_height = lines_needed_pt - font_only_height
 
     # Target: effective_height = scaled_font_height + spacing_height
@@ -891,8 +911,12 @@ def fill_body(slide, content: List[str], resize_width: float = None,
             continue
 
         # Detect indentation level and clean the text
-        level, cleaned_text = detect_indent_level(item)
+        level, cleaned_text, is_numbered = detect_indent_level(item)
         p.level = level
+
+        # For numbered items, disable the bullet
+        if is_numbered:
+            p.bullet = False
 
         # Apply formatted text (handles **bold** patterns)
         apply_formatted_text(p, cleaned_text)

@@ -49,10 +49,11 @@ class TableStyle:
     alt_row_fill: str = "#F2F2F2"      # Alternating row background
     text_color: str = "#000000"        # Text color
     border_color: str = "#A6A6A6"      # Border color
-    font_size: int = 10                # Font size in points
-    header_font_size: int = 11         # Header font size
+    font_size: int = 14                # Font size in points (increased from 10)
+    header_font_size: int = 16         # Header font size (increased from 11)
     header_bold: bool = True           # Bold header text
     use_alt_rows: bool = True          # Use alternating row colors
+    min_font_size: int = 10            # Minimum font size when scaling
 
 
 def hex_to_rgb(hex_color: str) -> RGBColor:
@@ -206,8 +207,72 @@ def style_cell(cell: _Cell, text: str, fill_color: str, text_color: str,
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
 
 
+def estimate_table_height(spec: Dict, config: TableConfig, style: TableStyle) -> float:
+    """
+    Estimate the height needed for a table based on content.
+
+    Returns height in inches.
+    """
+    headers = spec.get("headers", [])
+    rows = spec.get("rows", [])
+    num_rows = len(rows) + 1  # +1 for header
+
+    # Estimate row height based on font size and padding
+    # Each row needs: font height + vertical padding
+    header_row_height = (style.header_font_size / 72) + 0.15  # font pt to inches + padding
+    data_row_height = (style.font_size / 72) + 0.12  # font pt to inches + padding
+
+    # Account for text wrapping in cells
+    col_widths = calculate_column_widths(headers, rows, config.width)
+
+    # Check if any cell content would wrap
+    max_lines_per_row = [1] * num_rows  # Start with 1 line per row
+
+    # Check header row
+    for col_idx, header in enumerate(headers):
+        if col_idx < len(col_widths):
+            chars_per_line = max(1, col_widths[col_idx] / (style.header_font_size * 0.007))
+            lines_needed = max(1, len(header) / chars_per_line)
+            max_lines_per_row[0] = max(max_lines_per_row[0], lines_needed)
+
+    # Check data rows
+    for row_idx, row_data in enumerate(rows):
+        for col_idx, cell_text in enumerate(row_data):
+            if col_idx < len(col_widths):
+                chars_per_line = max(1, col_widths[col_idx] / (style.font_size * 0.007))
+                lines_needed = max(1, len(cell_text) / chars_per_line)
+                max_lines_per_row[row_idx + 1] = max(max_lines_per_row[row_idx + 1], lines_needed)
+
+    # Calculate total height
+    total_height = max_lines_per_row[0] * header_row_height
+    for i in range(1, num_rows):
+        total_height += max_lines_per_row[i] * data_row_height
+
+    return total_height
+
+
+def calculate_table_font_scale(spec: Dict, config: TableConfig, style: TableStyle,
+                                max_height: float) -> float:
+    """
+    Calculate the font scale factor needed to fit the table in the available height.
+
+    Returns scale factor (1.0 = no scaling, < 1.0 = shrink).
+    """
+    estimated_height = estimate_table_height(spec, config, style)
+
+    if estimated_height <= max_height:
+        return 1.0
+
+    # Calculate scale factor
+    scale = max_height / estimated_height * 0.95  # 5% margin
+
+    # Don't scale below minimum
+    min_scale = style.min_font_size / style.font_size
+    return max(min_scale, scale)
+
+
 def render_table(slide, spec: Dict, config: TableConfig = None,
-                 style: TableStyle = None) -> Optional[object]:
+                 style: TableStyle = None, max_height: float = None) -> Optional[object]:
     """
     Render a table on a slide based on the specification.
 
@@ -216,6 +281,7 @@ def render_table(slide, spec: Dict, config: TableConfig = None,
         spec: Table specification dict with 'headers' and 'rows'
         config: TableConfig for positioning
         style: TableStyle for appearance
+        max_height: Maximum height in inches (for overflow detection)
 
     Returns:
         Table shape object or None if failed
@@ -234,6 +300,26 @@ def render_table(slide, spec: Dict, config: TableConfig = None,
 
     num_rows = len(rows) + 1  # +1 for header row
     num_cols = len(headers)
+
+    # Check for overflow and scale fonts if needed
+    font_scale = 1.0
+    if max_height:
+        font_scale = calculate_table_font_scale(spec, config, style, max_height)
+        if font_scale < 1.0:
+            # Create scaled style
+            style = TableStyle(
+                header_fill=style.header_fill,
+                header_text=style.header_text,
+                row_fill=style.row_fill,
+                alt_row_fill=style.alt_row_fill,
+                text_color=style.text_color,
+                border_color=style.border_color,
+                font_size=max(style.min_font_size, int(style.font_size * font_scale)),
+                header_font_size=max(style.min_font_size, int(style.header_font_size * font_scale)),
+                header_bold=style.header_bold,
+                use_alt_rows=style.use_alt_rows,
+                min_font_size=style.min_font_size
+            )
 
     # Calculate height
     if config.height:
@@ -377,4 +463,4 @@ def parse_table_block(block: str) -> Dict:
 
 # For convenience, export key functions
 __all__ = ['render_table', 'parse_markdown_table', 'parse_table_block',
-           'TableConfig', 'TableStyle']
+           'TableConfig', 'TableStyle', 'estimate_table_height', 'calculate_table_font_scale']
