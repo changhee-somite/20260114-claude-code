@@ -94,11 +94,20 @@ def disable_bullet(paragraph):
 
 
 @dataclass
+class ContentItem:
+    """Represents a single content item with formatting metadata."""
+    text: str
+    is_code: bool = False  # True if this is a code block line
+    code_language: str = ""  # Language hint (e.g., "python", "bash")
+
+
+@dataclass
 class SlideContent:
     """Represents parsed content for a single slide."""
     number: int
     title: str = ""
-    content: List[str] = field(default_factory=list)
+    content: List[str] = field(default_factory=list)  # Plain strings for backward compat
+    content_items: List[ContentItem] = field(default_factory=list)  # Rich content items
     figure_path: Optional[str] = None
     figure_position: str = "right"  # right (default) or top
     diagram_spec: Optional[Dict] = None  # Parsed diagram specification
@@ -166,12 +175,39 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
         if content_match:
             content_text = content_match.group(1)
             # Parse bullets and other content, PRESERVING indentation for hierarchy
-            # Also detect and extract markdown tables from content
+            # Also detect and extract markdown tables and code blocks from content
             bullets = []
+            content_items = []
             table_lines = []  # Collect consecutive table rows
+            in_code_block = False
+            code_language = ""
 
             for line in content_text.split('\n'):
                 line_stripped = line.strip()
+
+                # Handle code fence markers
+                if line_stripped.startswith('```'):
+                    if not in_code_block:
+                        # Starting a code block
+                        in_code_block = True
+                        code_language = line_stripped[3:].strip()  # e.g., "python", "bash"
+                    else:
+                        # Ending a code block
+                        in_code_block = False
+                        code_language = ""
+                    continue
+
+                # If inside code block, preserve the line as code
+                if in_code_block:
+                    # Preserve original indentation for code
+                    bullets.append(line.rstrip())  # Keep leading spaces, strip trailing
+                    content_items.append(ContentItem(
+                        text=line.rstrip(),
+                        is_code=True,
+                        code_language=code_language
+                    ))
+                    continue
+
                 if not line_stripped:
                     continue
 
@@ -197,17 +233,21 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
                     bullet_text = re.sub(r'^[-*•]\s*', '', line_stripped)
                     if bullet_text:
                         # Preserve indentation by prepending spaces (2 spaces per level)
-                        bullets.append(' ' * leading_spaces + bullet_text)
+                        text = ' ' * leading_spaces + bullet_text
+                        bullets.append(text)
+                        content_items.append(ContentItem(text=text, is_code=False))
                 elif line_stripped.startswith('>'):
                     # Quote
                     quote_text = line_stripped.lstrip('> ')
-                    bullets.append(f'"{quote_text}"')
-                elif line_stripped.startswith('```'):
-                    continue  # Skip code fence markers
+                    text = f'"{quote_text}"'
+                    bullets.append(text)
+                    content_items.append(ContentItem(text=text, is_code=False))
                 elif not line_stripped.startswith('**'):
                     # Non-bullet content - preserve indentation
                     leading_spaces = len(line) - len(line.lstrip())
-                    bullets.append(' ' * leading_spaces + line_stripped)
+                    text = ' ' * leading_spaces + line_stripped
+                    bullets.append(text)
+                    content_items.append(ContentItem(text=text, is_code=False))
 
             # Handle table at end of content
             if table_lines and not slide.table_spec:
@@ -217,6 +257,7 @@ def parse_presentation_md(md_path: Path) -> List[SlideContent]:
                     slide.slide_type = 'text_table'
 
             slide.content = bullets
+            slide.content_items = content_items
 
         # Extract figure path
         figure_match = re.search(
@@ -487,15 +528,17 @@ def insert_table_into_placeholder(slide, table_spec: Dict, placeholder_idx: int,
 
 
 def fill_body_placeholder(slide, content: List[str], placeholder_idx: int,
-                          font_scale: float = 1.0) -> Tuple[bool, float]:
+                          font_scale: float = 1.0,
+                          content_items: List[ContentItem] = None) -> Tuple[bool, float]:
     """
     Fill a BODY placeholder with bullet content.
 
     Args:
         slide: The slide object
-        content: List of text items
+        content: List of text items (backward compat)
         placeholder_idx: Index of the BODY placeholder (typically 1 or 13)
         font_scale: Font scale factor (1.0 = no scaling)
+        content_items: List of ContentItem with formatting metadata (preferred)
 
     Returns:
         Tuple of (was_scaled, scale_factor)
@@ -522,26 +565,39 @@ def fill_body_placeholder(slide, content: List[str], placeholder_idx: int,
     tf = placeholder.text_frame
     tf.clear()
 
-    for i, item in enumerate(content):
+    # Use content_items if available, otherwise fall back to content list
+    items_to_render = content_items if content_items else [ContentItem(text=c) for c in content]
+
+    for i, item in enumerate(items_to_render):
         if i == 0:
             p = tf.paragraphs[0]
         else:
             p = tf.add_paragraph()
 
+        # Get text and code flag from ContentItem
+        item_text = item.text if isinstance(item, ContentItem) else item
+        is_code = item.is_code if isinstance(item, ContentItem) else False
+
         # Skip figure/table references
-        if item.startswith('[Figure:') or item.startswith('**Figure**'):
+        if item_text.startswith('[Figure:') or item_text.startswith('**Figure**'):
             continue
 
-        # Detect indentation level and clean the text
-        level, cleaned_text, is_numbered = detect_indent_level(item)
-        p.level = level
-
-        # For numbered items, disable the bullet
-        if is_numbered:
+        # For code blocks, disable bullet and use monospace
+        if is_code:
+            level = 0
             disable_bullet(p)
+            apply_formatted_text(p, item_text, is_code=True)
+        else:
+            # Detect indentation level and clean the text
+            level, cleaned_text, is_numbered = detect_indent_level(item_text)
+            p.level = level
 
-        # Apply formatted text (handles **bold** patterns)
-        apply_formatted_text(p, cleaned_text)
+            # For numbered items, disable the bullet
+            if is_numbered:
+                disable_bullet(p)
+
+            # Apply formatted text (handles **bold**, [link](url), `code` patterns)
+            apply_formatted_text(p, cleaned_text)
 
         # Apply scaled font size if needed
         if font_scale < 1.0:
@@ -610,15 +666,17 @@ def insert_image_in_placeholder(slide, image_path: Path, placeholder_idx: int):
 
 
 def fill_content_placeholder(slide, content: List[str], placeholder_idx: int,
-                             font_scale: float = 1.0) -> Tuple[bool, float]:
+                             font_scale: float = 1.0,
+                             content_items: List[ContentItem] = None) -> Tuple[bool, float]:
     """
     Fill a specific content placeholder by index with bullet content.
 
     Args:
         slide: The slide object
-        content: List of text items for the placeholder
+        content: List of text items for the placeholder (backward compat)
         placeholder_idx: Index of the placeholder to fill
         font_scale: Font scale factor (1.0 = no scaling, < 1.0 = shrink)
+        content_items: List of ContentItem with formatting metadata (preferred)
 
     Returns:
         Tuple of (was_scaled: bool, scale_factor: float)
@@ -642,26 +700,39 @@ def fill_content_placeholder(slide, content: List[str], placeholder_idx: int,
     tf = placeholder.text_frame
     tf.clear()
 
-    for i, item in enumerate(content):
+    # Use content_items if available, otherwise fall back to content list
+    items_to_render = content_items if content_items else [ContentItem(text=c) for c in content]
+
+    for i, item in enumerate(items_to_render):
         if i == 0:
             p = tf.paragraphs[0]
         else:
             p = tf.add_paragraph()
 
+        # Get text and code flag from ContentItem
+        item_text = item.text if isinstance(item, ContentItem) else item
+        is_code = item.is_code if isinstance(item, ContentItem) else False
+
         # Skip figure references
-        if item.startswith('[Figure:') or item.startswith('**Figure**'):
+        if item_text.startswith('[Figure:') or item_text.startswith('**Figure**'):
             continue
 
-        # Detect indentation level and clean the text
-        level, cleaned_text, is_numbered = detect_indent_level(item)
-        p.level = level
-
-        # For numbered items, disable the bullet
-        if is_numbered:
+        # For code blocks, disable bullet and use monospace
+        if is_code:
+            level = 0
             disable_bullet(p)
+            apply_formatted_text(p, item_text, is_code=True)
+        else:
+            # Detect indentation level and clean the text
+            level, cleaned_text, is_numbered = detect_indent_level(item_text)
+            p.level = level
 
-        # Apply formatted text (handles **bold** patterns)
-        apply_formatted_text(p, cleaned_text)
+            # For numbered items, disable the bullet
+            if is_numbered:
+                disable_bullet(p)
+
+            # Apply formatted text (handles **bold**, [link](url), `code` patterns)
+            apply_formatted_text(p, cleaned_text)
 
         # Apply scaled font size if needed
         if font_scale < 1.0:
@@ -673,37 +744,67 @@ def fill_content_placeholder(slide, content: List[str], placeholder_idx: int,
     return was_scaled, font_scale
 
 
-def apply_formatted_text(paragraph, text: str):
+def apply_formatted_text(paragraph, text: str, is_code: bool = False, monospace_font: str = "Consolas"):
     """
-    Apply text to a paragraph, parsing **bold** markdown patterns.
+    Apply text to a paragraph, parsing markdown patterns:
+    - **bold** for bold text
+    - [text](url) for hyperlinks
+    - `code` for inline code (monospace)
 
-    Creates separate runs for bold vs non-bold segments.
+    Creates separate runs for each formatting segment.
 
     Args:
         paragraph: python-pptx paragraph object
-        text: Text that may contain **bold** patterns
+        text: Text that may contain markdown patterns
+        is_code: If True, render entire text as monospace code
+        monospace_font: Font name for code/monospace text
     """
     # Clear existing runs
     paragraph.clear()
 
-    # Pattern to find **bold** text
-    bold_pattern = re.compile(r'\*\*(.+?)\*\*')
+    # If this is a code block line, apply monospace to entire text
+    if is_code:
+        run = paragraph.add_run()
+        run.text = text
+        run.font.name = monospace_font
+        return
+
+    # Combined pattern to find all formatting in order:
+    # - **bold** text
+    # - [text](url) markdown links
+    # - `inline code`
+    combined_pattern = re.compile(
+        r'(\*\*(.+?)\*\*)|'          # Group 1-2: bold
+        r'(\[([^\]]+)\]\(([^)]+)\))|'  # Group 3-5: markdown link [text](url)
+        r'(`([^`]+)`)'                 # Group 6-7: inline code
+    )
 
     last_end = 0
-    for match in bold_pattern.finditer(text):
-        # Add non-bold text before this match
+    for match in combined_pattern.finditer(text):
+        # Add plain text before this match
         if match.start() > last_end:
             run = paragraph.add_run()
             run.text = text[last_end:match.start()]
 
-        # Add bold text
-        run = paragraph.add_run()
-        run.text = match.group(1)
-        run.font.bold = True
+        if match.group(1):  # Bold text
+            run = paragraph.add_run()
+            run.text = match.group(2)
+            run.font.bold = True
+        elif match.group(3):  # Markdown link [text](url)
+            link_text = match.group(4)
+            link_url = match.group(5)
+            run = paragraph.add_run()
+            run.text = link_text
+            # Add hyperlink
+            run.hyperlink.address = link_url
+        elif match.group(6):  # Inline code `text`
+            run = paragraph.add_run()
+            run.text = match.group(7)
+            run.font.name = monospace_font
 
         last_end = match.end()
 
-    # Add any remaining non-bold text
+    # Add any remaining plain text
     if last_end < len(text):
         run = paragraph.add_run()
         run.text = text[last_end:]
@@ -870,15 +971,17 @@ def fill_subtitle(slide, subtitle_text: str):
 
 
 def fill_body(slide, content: List[str], resize_width: float = None,
-              font_scale: float = 1.0) -> Tuple[bool, float]:
+              font_scale: float = 1.0,
+              content_items: List[ContentItem] = None) -> Tuple[bool, float]:
     """
     Fill the body placeholder with bullet content, with optional font scaling.
 
     Args:
         slide: The slide object
-        content: List of text items for the body
+        content: List of text items for the body (backward compat)
         resize_width: Optional width to resize the placeholder to
         font_scale: Font scale factor (1.0 = no scaling, < 1.0 = shrink)
+        content_items: List of ContentItem with formatting metadata (preferred)
 
     Returns:
         Tuple of (was_scaled: bool, scale_factor: float)
@@ -922,26 +1025,39 @@ def fill_body(slide, content: List[str], resize_width: float = None,
     body_shape.width = Inches(resize_width) if resize_width else original_width
     body_shape.height = original_height
 
-    for i, item in enumerate(content):
+    # Use content_items if available, otherwise fall back to content list
+    items_to_render = content_items if content_items else [ContentItem(text=c) for c in content]
+
+    for i, item in enumerate(items_to_render):
         if i == 0:
             p = tf.paragraphs[0]
         else:
             p = tf.add_paragraph()
 
+        # Get text and code flag from ContentItem
+        item_text = item.text if isinstance(item, ContentItem) else item
+        is_code = item.is_code if isinstance(item, ContentItem) else False
+
         # Skip figure references
-        if item.startswith('[Figure:') or item.startswith('**Figure**'):
+        if item_text.startswith('[Figure:') or item_text.startswith('**Figure**'):
             continue
 
-        # Detect indentation level and clean the text
-        level, cleaned_text, is_numbered = detect_indent_level(item)
-        p.level = level
-
-        # For numbered items, disable the bullet
-        if is_numbered:
+        # For code blocks, disable bullet and use monospace
+        if is_code:
+            level = 0
             disable_bullet(p)
+            apply_formatted_text(p, item_text, is_code=True)
+        else:
+            # Detect indentation level and clean the text
+            level, cleaned_text, is_numbered = detect_indent_level(item_text)
+            p.level = level
 
-        # Apply formatted text (handles **bold** patterns)
-        apply_formatted_text(p, cleaned_text)
+            # For numbered items, disable the bullet
+            if is_numbered:
+                disable_bullet(p)
+
+            # Apply formatted text (handles **bold**, [link](url), `code` patterns)
+            apply_formatted_text(p, cleaned_text)
 
         # Apply scaled font size if needed
         if font_scale < 1.0:
@@ -1144,6 +1260,14 @@ def generate_presentation(
                    'status-tab' not in c.lower() and
                    '.png]' not in c
             ]
+            # Filter content_items similarly
+            clean_content_items = [
+                item for item in slide_content.content_items
+                if not item.text.startswith('[Figure:') and
+                   not item.text.startswith('**Figure**') and
+                   'status-tab' not in item.text.lower() and
+                   '.png]' not in item.text
+            ] if slide_content.content_items else None
 
             # For new template (7 layouts): use BODY[13] for text
             # For old template (4 layouts): use OBJECT[1] for text
@@ -1151,7 +1275,10 @@ def generate_presentation(
             image_placeholder_idx = 2  # OBJECT[2] for image in both templates
 
             # Fill text placeholder
-            was_scaled, scale = fill_body_placeholder(slide, clean_content, placeholder_idx=text_placeholder_idx)
+            was_scaled, scale = fill_body_placeholder(
+                slide, clean_content, placeholder_idx=text_placeholder_idx,
+                content_items=clean_content_items
+            )
             if was_scaled:
                 compressions.append({
                     'slide': i + 1,
@@ -1196,6 +1323,14 @@ def generate_presentation(
                    'status-tab' not in c.lower() and
                    '.png]' not in c
             ]
+            # Filter content_items similarly
+            clean_content_items = [
+                item for item in slide_content.content_items
+                if not item.text.startswith('[Figure:') and
+                   not item.text.startswith('**Figure**') and
+                   'status-tab' not in item.text.lower() and
+                   '.png]' not in item.text
+            ] if slide_content.content_items else None
 
             # For new template (7 layouts): OBJECT[1] top, BODY[13] bottom
             # For old template (4 layouts): OBJECT[1] top, OBJECT[2] bottom
@@ -1229,7 +1364,10 @@ def generate_presentation(
                 print(f"Slide {i+1}: Image not found: {fig_path}")
 
             # Fill BOTTOM placeholder with text
-            was_scaled, scale = fill_body_placeholder(slide, clean_content, placeholder_idx=text_placeholder_idx)
+            was_scaled, scale = fill_body_placeholder(
+                slide, clean_content, placeholder_idx=text_placeholder_idx,
+                content_items=clean_content_items
+            )
             if was_scaled:
                 compressions.append({
                     'slide': i + 1,
@@ -1241,7 +1379,10 @@ def generate_presentation(
 
         elif slide_content.slide_type == 'text_diagram' and slide_content.diagram_spec:
             # Fill content with resized width (same as images)
-            was_scaled, scale = fill_body(slide, slide_content.content, resize_width=layout_config.text_width)
+            was_scaled, scale = fill_body(
+                slide, slide_content.content, resize_width=layout_config.text_width,
+                content_items=slide_content.content_items
+            )
             if was_scaled:
                 compressions.append({
                     'slide': i + 1,
@@ -1288,7 +1429,8 @@ def generate_presentation(
                 # Layout 4 "Text and Content" with BODY[13] left + OBJECT[2] right
                 # Fill BODY[13] with text
                 was_scaled, scale = fill_body_placeholder(
-                    slide, slide_content.content, placeholder_idx=13
+                    slide, slide_content.content, placeholder_idx=13,
+                    content_items=slide_content.content_items
                 )
                 if was_scaled:
                     compressions.append({
@@ -1305,7 +1447,10 @@ def generate_presentation(
             else:
                 # Fallback for older templates - use hardcoded positions
                 if has_content:
-                    was_scaled, scale = fill_body(slide, slide_content.content, resize_width=layout_config.text_width)
+                    was_scaled, scale = fill_body(
+                        slide, slide_content.content, resize_width=layout_config.text_width,
+                        content_items=slide_content.content_items
+                    )
                     if was_scaled:
                         compressions.append({
                             'slide': i + 1,
@@ -1335,7 +1480,10 @@ def generate_presentation(
 
         elif slide_content.slide_type in ('text_only', 'section'):
             # Full-width text
-            was_scaled, scale = fill_body(slide, slide_content.content)
+            was_scaled, scale = fill_body(
+                slide, slide_content.content,
+                content_items=slide_content.content_items
+            )
             if was_scaled:
                 compressions.append({
                     'slide': i + 1,

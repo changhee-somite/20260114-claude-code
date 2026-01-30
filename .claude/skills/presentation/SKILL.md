@@ -60,6 +60,33 @@ The primary goal of any presentation is to **minimize cognitive burden** for you
 | `**Table**:` | No | Markdown table |
 | `**Notes**:` | No | Speaker notes |
 
+### Text Formatting
+
+The generator supports markdown formatting within content:
+
+| Format | Syntax | Result |
+|--------|--------|--------|
+| **Bold** | `**text**` | Bold text |
+| **Links** | `[text](url)` | Clickable hyperlink |
+| **Inline code** | `` `code` `` | Monospace font |
+| **Code blocks** | ` ``` ` fenced | Monospace font (Consolas) |
+
+#### Example with formatting:
+
+```markdown
+**Content**:
+- Visit [Claude Docs](https://docs.anthropic.com) for more info
+- Use the `git worktree` command for parallel sessions
+- **Important**: Always validate your output
+
+```bash
+# This code block renders in Consolas monospace font
+git worktree add ../feature feature/branch
+```
+```
+
+> **Note**: For visually distinct code boxes (dark background with border), you would need to create a custom slide layout in the template with a pre-styled code placeholder. PowerPoint's rendering model doesn't support inline visual containers like HTML/CSS.
+
 ### Slide Types
 
 | Type | When to Use |
